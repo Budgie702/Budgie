@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Budgie")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44bbb3512e3c85ab4784227e3641d6fd633b828a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73ff70b14b373e90c251366a3bf7dd02ef8bbf8b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Budgie")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Budgie")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
