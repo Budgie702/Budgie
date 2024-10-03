@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\T00225685\\source\\repos\\Budgie\\Budgie\\Budgie.csproj": {}
+    "C:\\Users\\T00225039\\Source\\Repos\\Budgie\\Budgie\\Budgie\\Budgie.csproj": {}
   },
   "projects": {
-    "C:\\Users\\T00225685\\source\\repos\\Budgie\\Budgie\\Budgie.csproj": {
+    "C:\\Users\\T00225039\\Source\\Repos\\Budgie\\Budgie\\Budgie\\Budgie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\T00225685\\source\\repos\\Budgie\\Budgie\\Budgie.csproj",
+        "projectUniqueName": "C:\\Users\\T00225039\\Source\\Repos\\Budgie\\Budgie\\Budgie\\Budgie.csproj",
         "projectName": "Budgie",
-        "projectPath": "C:\\Users\\T00225685\\source\\repos\\Budgie\\Budgie\\Budgie.csproj",
-        "packagesPath": "C:\\Users\\T00225685\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\T00225685\\source\\repos\\Budgie\\Budgie\\obj\\",
+        "projectPath": "C:\\Users\\T00225039\\Source\\Repos\\Budgie\\Budgie\\Budgie\\Budgie.csproj",
+        "packagesPath": "C:\\Users\\T00225039\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\T00225039\\Source\\Repos\\Budgie\\Budgie\\Budgie\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\T00225685\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\T00225039\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -49,6 +49,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Oracle.ManagedDataAccess.Core": {
+              "target": "Package",
+              "version": "[23.6.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
