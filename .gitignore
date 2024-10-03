@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Budgie/.vs/Budgie/FileContentIndex/8593fd5d-7e6f-4cb2-ad89-1fb2aa6dcfd7.vsidx
+/Budgie/Budgie/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/.vs/Budgie/v17/DocumentLayout.json
+/.vs/Budgie/v17/.wsuo
+/.gitignore
