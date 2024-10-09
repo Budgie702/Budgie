@@ -13,7 +13,6 @@ namespace BudgieBudgeting.Pages
 
         public void OnPost()
         {
-            
             Response.Redirect("/homepage");
         }
     }
