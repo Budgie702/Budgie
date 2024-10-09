@@ -4,59 +4,62 @@
 	ViewData["Title"] = "Register";
 }
 ﻿
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Animated Dynamic Form</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <title>Nathan Swan Pole</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
 </head>
-
-<!-- Coded With Love By Mutiullah Samim-->
 <body>
-	<dvi class="container h-100">
-		<div class="d-flex justify-content-center">
-			<div class="card mt-5 col-md-4 animated bounceInDown myForm">
-				<div class="card-header">
-					<h4>Details</h4>
-				</div>
-				<div class="card-body">
-					<form>
-						<div id="dynamic_container">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text br-15"><i class="fas fa-regular fa-user"></i></span>
-								</div>
-								<input type="text" placeholder="Name" class="form-control" />
-							</div>
-							<div class="input-group mt-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text br-15"><i class="fas fa-at"></i></span>
-								</div>
-								<input type="text" placeholder="Email" class="form-control" />
-							</div>
-							<div class="input-group mt-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text br-15"><i class="fas fa-solid fa-lock"></i></span>
-								</div>
-								<input type="password" placeholder="Password" class="form-control" />
-
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="card-footer">
-					<button class="btn btn-success btn-sm float-right submit_btn"><i class="fas fa-arrow-alt-circle-right"></i> Submit</button>
-				</div>
-			</div>
-		</div>
-	</dvi>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Login via site</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post">
+                            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@Model.ErrorMessage</div>
+                            }
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" type="email" asp-for="RegisterCredential.Email" placeholder="YourName@example.com">
+                                    <span asp-validation-for="RegisterCredential.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" asp-for="RegisterCredential.Username" placeholder="Username">
+                                    <span asp-validation-for="RegisterCredential.Username" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="password" asp-for="RegisterCredential.Password" placeholder="Password">
+                                    <span asp-validation-for="RegisterCredential.Password" class="text-danger"></span>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                                    </label>
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Register">
+                                <div style="text-align:center; padding:4px;">Or</div>
+                            </fieldset>
+                        </form>
+                        @section Scripts {
+                            <partial name="_ValidationScriptsPartial" />
+                        }
+                        <form method="get" action="/login">
+                            <button type="submit" class="btn btn-lg btn-success btn-block">login</button>
+                        </form>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
