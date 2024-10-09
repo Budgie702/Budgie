@@ -11,6 +11,7 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="/js/site.js"></script>
     <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
 </head>
 <body>
@@ -22,19 +23,19 @@
                         <h3 class="panel-title">Delete account :(</h3>
                     </div>
                     <div class="panel-body">
-                        <form method="post" onsubmit="return confirmDelete();">
+                        <form method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" type="email" placeholder="YourName@example.com">
-                                    <span class="text-danger"></span>
+                                    <input class="form-control" asp-for=DeleteCredential.Email type="email" placeholder="YourName@example.com">
+                                    <span asp-validation-for="DeleteCredential.Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Username">
-                                    <span class="text-danger"></span>
+                                    <input class="form-control" asp-for=DeleteCredential.Username type="text" placeholder="Username">
+                                    <span asp-validation-for=DeleteCredential.Username class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password">
-                                    <span class="text-danger"></span>
+                                    <input class="form-control" asp-for=DeleteCredential.Password type="password" placeholder="Password">
+                                    <span asp-validation-for=DeleteCredential.Password class="text-danger"></span>
                                 </div>
                                 <button type="submit" class="btn btn-lg btn-success btn-block">Delete</button>
                             </fieldset>
@@ -50,8 +51,3 @@
 </body>
 </html>
 
-<script>
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete your account? This action cannot be undone.");
-    }
-</script>
