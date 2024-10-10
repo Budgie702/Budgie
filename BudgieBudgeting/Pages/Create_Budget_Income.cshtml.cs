@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BudgieBudgeting.Pages
 {
-    public class Create_BudgetModel : PageModel
+    public class Create_Budget_IncomeModel : PageModel
     {
         [BindProperty]
         public string BudgetAmount { get; set; }

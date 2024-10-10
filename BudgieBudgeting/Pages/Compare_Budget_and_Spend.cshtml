@@ -1,12 +1,105 @@
 ﻿@page
-@model BudgieBudgeting.Pages.Compare_Budget_and_spendModel
+@model BudgieBudgeting.Pages.Compare_Budget_and_SpendModel
 @{
-    ViewData["Title"] = "Compare Budget and Spend";
+    ViewData["Title"] = "Compare Budget and Spending";
 }
-<!Doctype html>
+<!DOCTYPE html>
+<html>
 <head>
-    <title></title>
+    <title>Compare Budget and Spending</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+
+    <!-- Include Chart.js for the graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh; /* Set height of the chart */
+            width: 100%; /* Set width of the chart to 100% */
+            max-width: 800px; /* Limit max width of the chart */
+        }
+
+        canvas {
+            width: 100% !important; /* Ensure canvas takes full width */
+            height: auto !important; /* Ensure canvas adjusts height automatically */
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="text-align:center">Compare Budget and Spending</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="chart-container">
+                            <canvas id="budgetSpendChart"></canvas>
+                        </div>
+                        <script>
+                            // Sample data for the chart
+                            // START SAMPLE DATA
+                            var budgetData = [500, 400, 300, 450, 600, 700]; // Example budget amounts
+                            var spendingData = [300, 350, 250, 400, 500, 600]; // Example spending amounts
+                            var labels = ['January', 'February', 'March', 'April', 'May', 'June']; // Example labels for the x-axis
+                            // END SAMPLE DATA
+
+                            // Initialize the chart
+                            var ctx = document.getElementById('budgetSpendChart').getContext('2d');
+                            var budgetSpendChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: labels,
+                                    datasets: [
+                                        {
+                                            label: 'Budget',
+                                            data: budgetData,
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                            borderWidth: 1,
+                                            fill: true
+                                        },
+                                        {
+                                            label: 'Spending',
+                                            data: spendingData,
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                            borderWidth: 1,
+                                            fill: true
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+
+                            // TODO: Retrieve budget data from the database
+                            // var budgetData = // Retrieve from database here
+
+                            // TODO: Retrieve spending data from the database
+                            // var spendingData = // Retrieve from database here
+
+                            // After fetching the data, update the chart with the real data
+                            // budgetSpendChart.data.datasets[0].data = budgetData;
+                            // budgetSpendChart.data.datasets[1].data = spendingData;
+                            // budgetSpendChart.update();
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

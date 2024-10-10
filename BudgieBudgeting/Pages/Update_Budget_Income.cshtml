@@ -1,7 +1,7 @@
 ﻿@page
-@model BudgieBudgeting.Pages.Update_BudgetModel
+@model BudgieBudgeting.Pages.Update_Budget_IncomeModel
 @{
-    ViewData["Title"] = "Update_Budget";
+    ViewData["Title"] = "Update Budget Income";
 }
 <!DOCTYPE html>
 <html>
@@ -32,7 +32,7 @@
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title" style="text-align:center">Create Budget</h3>
+                    <h3 class="panel-title" style="text-align:center">Update Budget</h3>
                 </div>
                 <div class="panel-body">
                     <form method="post">
@@ -45,7 +45,7 @@
                                 <label for="budgetAmount">Update Budget Amount</label>
                                 <input class="form-control" type="number" id="budgetAmount" name="budgetAmount" placeholder="Enter your updated budget" required>
                             </div>
-                            <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Create Budget">
+                            <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Update Budget">
                         </fieldset>
                     </form>
                 </div>
