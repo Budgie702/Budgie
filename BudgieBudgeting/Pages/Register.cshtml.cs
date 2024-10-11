@@ -20,7 +20,6 @@ namespace BudgieBudgeting.Pages
             {
                 connection.Open();
 
-                
                 using (SqlCommand checkCommand = new SqlCommand(checkEmailQuery, connection))
                 {
                     checkCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
@@ -33,7 +32,6 @@ namespace BudgieBudgeting.Pages
                     }
                 }
 
-                
                 using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
                 {
                     insertCommand.Parameters.AddWithValue("@Username", RegisterCredential.Username);
