@@ -1,0 +1,56 @@
+﻿@page
+@model BudgieBudgeting.Pages.Create_Budget_IncomeModel
+@{
+    ViewData["Title"] = "Create Budget";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Budget</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <style>
+        .centered-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 75vh;
+        }
+
+        .panel {
+            width: 100%;
+            max-width: 400px; /* This controls how wide the form is */
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container centered-container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="text-align:center">Create Budget</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="post">
+                        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            <div class="alert alert-danger">@Model.ErrorMessage</div>
+                        }
+                        <fieldset>
+                            <div class="form-group text-center">
+                                <label for="budgetAmount">Enter Budget Amount</label>
+                                <input class="form-control" type="number" id="budgetAmount" name="budgetAmount" placeholder="Enter your budget" required>
+                            </div>
+                            <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Create Budget">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

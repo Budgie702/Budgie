@@ -1,0 +1,105 @@
+﻿@page
+@model BudgieBudgeting.Pages.Check_SpendingModel
+@{
+    ViewData["Title"] = "Check Spending";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Spending</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+
+    <style>
+        .budget-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .budget-column {
+            width: 30%;
+            margin-bottom: 20px; /* Added margin for spacing */
+        }
+
+        .entry-container {
+            margin-bottom: 10px; /* Space between entries */
+        }
+
+            .entry-container textarea {
+                width: calc(100% - 90px); /* Adjust width for the input box */
+                display: inline-block; /* Display inline to line up with the input box */
+                resize: none; /* Disable resizing */
+            }
+
+            .entry-container input {
+                width: 70px; /* Set width for input box */
+                margin-left: 10px; /* Space between textarea and input */
+                display: inline-block; /* Aligns input with textarea */
+                pointer-events: none; /* Disable input */
+                background-color: #f9f9f9; /* Light grey background for disabled input */
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="text-align:center">Check Spending</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="budget-columns">
+                            <div class="budget-column">
+                                <h4 style="text-align:center;">Needs</h4>
+                                <div id="needsEntries">
+                                    <!-- Retrieve Needs data from the database here -->
+                                    @foreach (var need in Model.Needs)
+                                    {
+                                        <div class="entry-container">
+                                            <textarea class="form-control" name="Needs[]" readonly>@need</textarea>
+                                            <input type="number" class="form-control" name="NeedsAmount[]" placeholder="$" min="0" readonly>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="budget-column">
+                                <h4 style="text-align:center;">Wants</h4>
+                                <div id="wantsEntries">
+                                    <!-- Retrieve Wants data from the database here -->
+                                    @foreach (var want in Model.Wants)
+                                    {
+                                        <div class="entry-container">
+                                            <textarea class="form-control" name="Wants[]" readonly>@want</textarea>
+                                            <input type="number" class="form-control" name="WantsAmount[]" placeholder="$" min="0" readonly>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="budget-column">
+                                <h4 style="text-align:center;">Savings</h4>
+                                <div id="savingsEntries">
+                                    <!-- Retrieve Savings data from the database here -->
+                                    @foreach (var saving in Model.Savings)
+                                    {
+                                        <div class="entry-container">
+                                            <textarea class="form-control" name="Savings[]" readonly>@saving</textarea>
+                                            <input type="number" class="form-control" name="SavingsAmount[]" placeholder="$" min="0" readonly>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <a href="/Homepage" class="btn btn-lg btn-primary btn-block">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
