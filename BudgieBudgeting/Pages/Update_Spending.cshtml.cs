@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BudgieBudgeting.Pages
 {
-    public class Create_BudgetModel : PageModel
+    public class Update_SpendingModel : PageModel
     {
         [BindProperty]
         public List<string> Needs { get; set; } = new List<string>();
@@ -15,14 +15,23 @@ namespace BudgieBudgeting.Pages
         [BindProperty]
         public List<string> Savings { get; set; } = new List<string>();
 
+        [BindProperty]
+        public List<decimal> NeedsAmount { get; set; } = new List<decimal>();
+
+        [BindProperty]
+        public List<decimal> WantsAmount { get; set; } = new List<decimal>();
+
+        [BindProperty]
+        public List<decimal> SavingsAmount { get; set; } = new List<decimal>();
+
         public void OnGet()
         {
-            // Initialization logic, if needed
+            // Load data from the database here
         }
 
         public IActionResult OnPost()
         {
-            // Process the form submission, save to the database
+            // Process form submission here (e.g., save to the database)
             return RedirectToPage("/Success");
         }
     }

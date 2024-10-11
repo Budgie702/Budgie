@@ -1,0 +1,120 @@
+﻿@page
+@model BudgieBudgeting.Pages.Update_SpendingModel
+@{
+    ViewData["Title"] = "Update Spending";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Spending</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="/css/UpdateSpending.css" rel="stylesheet" />
+    <!-- Include Font Awesome for icons -->
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="text-align:center">Update Spending</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post">
+                            <div class="budget-columns">
+                                <div class="budget-column" id="needsColumn">
+                                    <h4 style="text-align:center;">Needs</h4>
+                                    <div id="needsEntries">
+                                        <!-- Retrieve Needs data from the database here -->
+                                        @foreach (var need in Model.Needs)
+                                        {
+                                            <div class="entry-container">
+                                                <textarea class="form-control" name="Needs[]" placeholder="Enter needs">@need</textarea>
+                                                <input type="number" class="form-control" name="NeedsAmount[]" placeholder="$" min="0">
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="add-button">
+                                        <button type="button" class="btn btn-primary" onclick="addEntry('needsEntries', 'Needs')">+</button>
+                                    </div>
+                                </div>
+                                <div class="budget-column" id="wantsColumn">
+                                    <h4 style="text-align:center;">Wants</h4>
+                                    <div id="wantsEntries">
+                                        <!-- Retrieve Wants data from the database here -->
+                                        @foreach (var want in Model.Wants)
+                                        {
+                                            <div class="entry-container">
+                                                <textarea class="form-control" name="Wants[]" placeholder="Enter wants">@want</textarea>
+                                                <input type="number" class="form-control" name="WantsAmount[]" placeholder="$" min="0">
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="add-button">
+                                        <button type="button" class="btn btn-primary" onclick="addEntry('wantsEntries', 'Wants')">+</button>
+                                    </div>
+                                </div>
+                                <div class="budget-column" id="savingsColumn">
+                                    <h4 style="text-align:center;">Savings</h4>
+                                    <div id="savingsEntries">
+                                        <!-- Retrieve Savings data from the database here -->
+                                        @foreach (var saving in Model.Savings)
+                                        {
+                                            <div class="entry-container">
+                                                <textarea class="form-control" name="Savings[]" placeholder="Enter savings">@saving</textarea>
+                                                <input type="number" class="form-control" name="SavingsAmount[]" placeholder="$" min="0">
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="add-button">
+                                        <button type="button" class="btn btn-primary" onclick="addEntry('savingsEntries', 'Savings')">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Update Spending">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addEntry(containerId, name) {
+            var container = document.getElementById(containerId);
+            var newEntry = document.createElement('div');
+            newEntry.className = 'entry-container';
+            newEntry.innerHTML = `
+                                <textarea class="form-control" name="${name}[]" placeholder="Enter ${name.toLowerCase()}"></textarea>
+                                <input type="number" class="form-control" name="${name}Amount[]" placeholder="$" min="0">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            `;
+            container.appendChild(newEntry);
+        }
+
+        function removeEntry(button) {
+            // Remove the entry (textarea, input, and button) that corresponds to the trash icon clicked
+            var entryContainer = button.parentElement;
+            entryContainer.remove();
+        }
+    </script>
+</body>
+</html>

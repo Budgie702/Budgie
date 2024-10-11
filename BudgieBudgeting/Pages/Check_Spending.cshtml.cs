@@ -4,26 +4,19 @@ using System.Collections.Generic;
 
 namespace BudgieBudgeting.Pages
 {
-    public class Create_BudgetModel : PageModel
+    public class Check_SpendingModel : PageModel
     {
-        [BindProperty]
         public List<string> Needs { get; set; } = new List<string>();
-
-        [BindProperty]
         public List<string> Wants { get; set; } = new List<string>();
-
-        [BindProperty]
         public List<string> Savings { get; set; } = new List<string>();
 
         public void OnGet()
         {
-            // Initialization logic, if needed
-        }
-
-        public IActionResult OnPost()
-        {
-            // Process the form submission, save to the database
-            return RedirectToPage("/Success");
+            // Retrieve Needs, Wants, and Savings from the database
+            // Example:
+            // Needs = _yourDatabaseService.GetNeeds();
+            // Wants = _yourDatabaseService.GetWants();
+            // Savings = _yourDatabaseService.GetSavings();
         }
     }
 }

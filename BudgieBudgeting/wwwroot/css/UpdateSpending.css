@@ -1,0 +1,30 @@
+﻿.budget-columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.budget-column {
+    width: 30%;
+    margin-bottom: 20px; /* Added margin for spacing */
+}
+
+.entry-container {
+    margin-bottom: 10px; /* Space between entries */
+    display: flex; /* Flexbox for horizontal alignment */
+    align-items: center; /* Align items vertically centered */
+}
+
+    .entry-container input {
+        width: 70px; /* Set width for input box */
+        margin-left: 10px; /* Space between textarea and input */
+    }
+
+    .entry-container textarea {
+        width: calc(100% - 90px); /* Adjust width for the input box */
+        margin-right: 10px; /* Space between textarea and trash icon */
+    }
+
+.add-button {
+    text-align: center;
+    margin-top: 10px; /* Space above the add buttons */
+}

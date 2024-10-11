@@ -1,12 +1,12 @@
 ﻿@page
-@model BudgieBudgeting.Pages.Create_BudgetModel
+@model BudgieBudgeting.Pages.Update_BudgetModel
 @{
-    ViewData["Title"] = "Create Budget";
+    ViewData["Title"] = "Update Budget";
 }
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Budget</title>
+    <title>Update Budget</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -52,50 +52,62 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title" style="text-align:center">Create Budget</h3>
+                        <h3 class="panel-title" style="text-align:center">Update Budget</h3>
                     </div>
                     <div class="panel-body">
                         <form method="post">
                             <div class="budget-columns">
                                 <div class="budget-column" id="needsColumn">
                                     <h4 style="text-align:center;">Needs</h4>
-                                    <div class="entry-container">
-                                        <textarea class="form-control" name="Needs[]" placeholder="Enter needs"></textarea>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                                    @foreach (var need in Model.Needs)
+                                    {
+                                        <div class="entry-container">
+                                            <textarea class="form-control" name="Needs[]">@need</textarea>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                    <!-- Retrieve data from database here for needs -->
                                     <div class="add-button">
                                         <button type="button" class="btn btn-primary" onclick="addEntry('needsColumn', 'Needs')">+</button>
                                     </div>
                                 </div>
                                 <div class="budget-column" id="wantsColumn">
                                     <h4 style="text-align:center;">Wants</h4>
-                                    <div class="entry-container">
-                                        <textarea class="form-control" name="Wants[]" placeholder="Enter wants"></textarea>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                                    @foreach (var want in Model.Wants)
+                                    {
+                                        <div class="entry-container">
+                                            <textarea class="form-control" name="Wants[]">@want</textarea>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                    <!-- Retrieve data from database here for wants -->
                                     <div class="add-button">
                                         <button type="button" class="btn btn-primary" onclick="addEntry('wantsColumn', 'Wants')">+</button>
                                     </div>
                                 </div>
                                 <div class="budget-column" id="savingsColumn">
                                     <h4 style="text-align:center;">Savings</h4>
-                                    <div class="entry-container">
-                                        <textarea class="form-control" name="Savings[]" placeholder="Enter savings"></textarea>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                                    @foreach (var saving in Model.Savings)
+                                    {
+                                        <div class="entry-container">
+                                            <textarea class="form-control" name="Savings[]">@saving</textarea>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                    <!-- Retrieve data from database here for savings -->
                                     <div class="add-button">
                                         <button type="button" class="btn btn-primary" onclick="addEntry('savingsColumn', 'Savings')">+</button>
                                     </div>
                                 </div>
                             </div>
                             <div style="margin-top: 20px;">
-                                <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Create Budget">
+                                <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Update Budget">
                             </div>
                         </form>
                     </div>
@@ -110,11 +122,11 @@
             var newEntry = document.createElement('div');
             newEntry.className = 'entry-container';
             newEntry.innerHTML = `
-                        <textarea class="form-control" name="${name}[]" placeholder="Enter ${name.toLowerCase()}"></textarea>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `;
+                                <textarea class="form-control" name="${name}[]" placeholder="Enter ${name.toLowerCase()}"></textarea>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            `;
             container.querySelector('.add-button').before(newEntry);
         }
 
