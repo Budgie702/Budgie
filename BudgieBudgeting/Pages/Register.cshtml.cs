@@ -13,6 +13,10 @@ namespace BudgieBudgeting.Pages
 
         public void OnPost()
         {
+            Console.WriteLine("Test");
+            Connection connection = new Connection();
+            string output = connection.GetOutput();
+            Console.WriteLine(output);
             Response.Redirect("/homepage");
         }
     }
