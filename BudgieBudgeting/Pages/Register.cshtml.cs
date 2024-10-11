@@ -13,16 +13,36 @@ namespace BudgieBudgeting.Pages
 
         public void OnPost()
         {
-            string sql = "INSERT INTO dbo.Customer (Username, email, UserPassword) VALUES (@Username, @email, @UserPassword);";
+            string checkEmailQuery = "SELECT COUNT(*) FROM dbo.Customer WHERE email = @Email";
+            string insertQuery = "INSERT INTO dbo.Customer (Username, email, UserPassword) VALUES (@Username, @Email, @UserPassword)";
+
             using (SqlConnection connection = DatabaseConnection.Connection)
             {
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@Username", RegisterCredential.Username);
-                command.Parameters.AddWithValue("@email", RegisterCredential.Email);
-                command.Parameters.AddWithValue("@UserPassword", RegisterCredential.Password);
                 connection.Open();
-                command.ExecuteNonQuery();
+
+                
+                using (SqlCommand checkCommand = new SqlCommand(checkEmailQuery, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
+                    int emailCount = (int)checkCommand.ExecuteScalar();
+
+                    if (emailCount > 0)
+                    {
+                        ErrorMessage = "Email already exists.";
+                        return;
+                    }
+                }
+
+                
+                using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@Username", RegisterCredential.Username);
+                    insertCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
+                    insertCommand.Parameters.AddWithValue("@UserPassword", RegisterCredential.Password);
+                    insertCommand.ExecuteNonQuery();
+                }
             }
+
             Response.Redirect("/Homepage");
         }
     }
