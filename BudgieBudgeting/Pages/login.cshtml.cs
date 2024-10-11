@@ -12,43 +12,46 @@ namespace BudgieBudgeting.Pages
         [BindProperty]
         public required Credential Credential { get; set; }
 
-        public string? ErrorMessage { get; set; } // Made nullable
+        public string? ErrorMessage { get; set; }
 
         public void OnPost()
         {
             if (ModelState.IsValid)
             {
-                if (Credential.Username == "admin" && Credential.Password == "admin")
-                {
-                    Response.Redirect("/Homepage");
-                }
-                /*else
-                {   
-                    ErrorMessage = "Invalid username or password";
-                }*/
-                else
-                {
-                    try
-                    {
-                        string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                string query = "SELECT Email, UserPassword FROM Customer WHERE Email = @Email";
 
-                        using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(DatabaseConnection.Connection.ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Email", Credential.Username);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            connection.Open();
-                            ErrorMessage = "Database connection successful";
+                            if (reader.Read())
+                            {
+                                string email = reader.GetString(0);
+                                string password = reader.GetString(1);
+
+                                if (Credential.Password == password)
+                                {
+                                    Response.Redirect("/Homepage");
+                                }
+                                else
+                                {
+                                    ErrorMessage = "Invalid password";
+                                }
+                            }
+                            else
+                            {
+                                ErrorMessage = "Invalid username";
+                            }
                         }
-                    }
-                    catch (SqlException)
-                    {
-                        ErrorMessage = "Database connection failed. Please try again later.";
-                    }
-                    catch (Exception)
-                    {
-                        ErrorMessage = "An unexpected error occurred. Please try again later.";
                     }
                 }
             }
-
         }
     }
 

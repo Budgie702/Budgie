@@ -23,6 +23,7 @@ namespace BudgieBudgeting.Pages
                 connection.Open();
                 command.ExecuteNonQuery();
             }
+            Response.Redirect("/Homepage");
         }
     }
     public class RegisterCredential
