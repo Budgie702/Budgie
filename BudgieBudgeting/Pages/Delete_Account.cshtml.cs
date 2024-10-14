@@ -8,9 +8,9 @@ namespace BudgieBudgeting.Pages
 	public class Delete_AccountModel : PageModel
 	{
 		[BindProperty]
-		public DeleteCredential DeleteCredential { get; set; }
+		public required DeleteCredential DeleteCredential { get; set; }
 
-		public string ErrorMessage { get; set; }
+		public required string ErrorMessage { get; set; }
 
 		public void OnPost()
 		{
