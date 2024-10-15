@@ -23,10 +23,10 @@
                         </div>
                         <div class="panel-body">
                             <form method="post">
-                                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-                                {
-                                    <div class="alert alert-danger">@Model.ErrorMessage</div>
-                                }
+                            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@Model.ErrorMessage</div>
+                            }
                                 <fieldset>
                                     <div class="form-group">
                                         <input class="form-control" type="text" asp-for="Credential.Username" placeholder="YourName@example.com">

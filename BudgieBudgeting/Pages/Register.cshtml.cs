@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.Data.SqlClient;
 namespace BudgieBudgeting.Pages
 {
     public class RegisterModel : PageModel
@@ -13,7 +13,35 @@ namespace BudgieBudgeting.Pages
 
         public void OnPost()
         {
-            Response.Redirect("/homepage");
+            string checkEmailQuery = "SELECT COUNT(*) FROM dbo.Customer WHERE email = @Email";
+            string insertQuery = "INSERT INTO dbo.Customer (Username, email, UserPassword) VALUES (@Username, @Email, @UserPassword)";
+
+            using (SqlConnection connection = DatabaseConnection.Connection)
+            {
+                connection.Open();
+
+                using (SqlCommand checkCommand = new SqlCommand(checkEmailQuery, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
+                    int emailCount = (int)checkCommand.ExecuteScalar();
+
+                    if (emailCount > 0)
+                    {
+                        ErrorMessage = "Email already exists.";
+                        return;
+                    }
+                }
+
+                using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@Username", RegisterCredential.Username);
+                    insertCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
+                    insertCommand.Parameters.AddWithValue("@UserPassword", RegisterCredential.Password);
+                    insertCommand.ExecuteNonQuery();
+                }
+            }
+
+            Response.Redirect("/Homepage");
         }
     }
     public class RegisterCredential
