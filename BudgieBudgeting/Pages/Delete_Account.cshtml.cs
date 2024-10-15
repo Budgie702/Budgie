@@ -12,25 +12,36 @@ namespace BudgieBudgeting.Pages
 
 		public required string ErrorMessage { get; set; }
 
-		public void OnPost()
-		{
-			string DeleteQuery = "DELETE FROM dbo.Customer WHERE email = @Email AND UserPassword = @UserPassword";
+        public void OnPost()
+        {
+            string DeleteQuery = "DELETE FROM dbo.Customer WHERE email = @Email AND UserPassword = @UserPassword";
+            int rowsDeleted = 0;
 
-			using (SqlConnection connection = DatabaseConnection.Connection)
-			{
-				connection.Open();
+            using (SqlConnection connection = DatabaseConnection.Connection)
+            {
+                connection.Open();
 
-				using (SqlCommand insertCommand = new SqlCommand(DeleteQuery, connection))
-				{
-					insertCommand.Parameters.AddWithValue("@Email", DeleteCredential.Email);
-					insertCommand.Parameters.AddWithValue("@UserPassword", DeleteCredential.Password);
+                using (SqlCommand deleteCommand = new SqlCommand(DeleteQuery, connection))
+                {
+                    deleteCommand.Parameters.AddWithValue("@Email", DeleteCredential.Email);
+                    deleteCommand.Parameters.AddWithValue("@UserPassword", DeleteCredential.Password);
 
-					insertCommand.ExecuteNonQuery();
-				}
-			}
+                    rowsDeleted = deleteCommand.ExecuteNonQuery();
+                }
+            }
 
-			Response.Redirect("/Homepage");
-		}
+            if (rowsDeleted > 0)
+            {
+                 Response.Redirect("/Homepage");
+            }
+            else
+            {
+                ErrorMessage = "Account Not Found";
+                return;
+            }
+
+           
+        }
 	}
 
 		public class DeleteCredential
