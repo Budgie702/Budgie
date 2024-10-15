@@ -6,7 +6,7 @@
 trigger:
 - master
 
-pool: MyPool
+pool: SchoolWasUphillBothWays
 
 variables:
   solution: '**/*.sln'
