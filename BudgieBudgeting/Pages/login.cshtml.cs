@@ -58,7 +58,7 @@ namespace BudgieBudgeting.Pages.Shared
                             }
                             else
                             {
-                                ErrorMessage = "Invalid username";
+                                ErrorMessage = "Invalid Email";
                             }
                         }
                     }
