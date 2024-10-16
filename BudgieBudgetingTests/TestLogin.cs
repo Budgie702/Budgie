@@ -5,6 +5,7 @@ namespace BudgieBudgetingTests
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
     using Moq;
+    using Microsoft.Data.SqlClient;
 
     [TestClass]
     public class TestLogin
