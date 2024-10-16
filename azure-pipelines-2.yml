@@ -4,7 +4,7 @@ trigger:
       - pre-production
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'Default'
 
 variables:
   solution: '**/*.sln'
