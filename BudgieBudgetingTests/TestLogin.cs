@@ -6,11 +6,11 @@ namespace BudgieBudgetingTests
     using Microsoft.AspNetCore.Http;
     using Moq;
     using Microsoft.Data.SqlClient;
-
+    using BudgieBudgeting;
+    
     [TestClass]
     public class TestLogin
     {
-
         [TestMethod]
         public void TestLoginCode()
         {
@@ -22,7 +22,6 @@ namespace BudgieBudgetingTests
                     Password = "Please work",
                 }
             };
-
             loginTest.OnPost();
         }
 
@@ -43,4 +42,5 @@ namespace BudgieBudgetingTests
             Assert.IsTrue(true);
         }
     }
+
 }
