@@ -1,4 +1,6 @@
-﻿namespace BudgieBudgeting.DatabaseItems
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace BudgieBudgeting.DatabaseItems
 {
     public class Budget
     {
