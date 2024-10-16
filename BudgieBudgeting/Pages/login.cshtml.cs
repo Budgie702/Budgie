@@ -67,6 +67,7 @@ namespace BudgieBudgeting.Pages.Shared
                             }
                         }
                     }
+                    connection.Close(); 
                 }
             }
         }
