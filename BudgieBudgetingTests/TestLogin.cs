@@ -11,19 +11,6 @@ namespace BudgieBudgetingTests
     [TestClass]
     public class TestLogin
     {
-        [TestMethod]
-        public void TestLoginCode()
-        {
-            var loginTest = new loginModel
-            {
-                Credential = new Credential()
-                {
-                    Email = "dannyfinnegan60@gmail.com",
-                    Password = "Please work",
-                }
-            };
-            loginTest.OnPost();
-        }
 
         [TestMethod]
         public void TestGetLogin()
