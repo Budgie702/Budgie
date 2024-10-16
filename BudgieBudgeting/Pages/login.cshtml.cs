@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Data.SqlClient; // Updated namespace
 using System.Net;
 
-namespace BudgieBudgeting.Pages
+namespace BudgieBudgeting.Pages.Shared
 {
     public class loginModel : PageModel
     {
@@ -14,8 +14,12 @@ namespace BudgieBudgeting.Pages
 
         public string? ErrorMessage { get; set; }
 
+        public void OnGet()
+        {
+        }
         public void OnPost()
         {
+            
             if (ModelState.IsValid)
             {
                 string query = "SELECT Email, UserPassword FROM Customer WHERE Email = @Email";

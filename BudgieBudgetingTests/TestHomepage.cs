@@ -4,7 +4,7 @@ namespace BudgieBudgetingTests
     using BudgieBudgeting.Pages.Shared;
 
     [TestClass]
-    public class UnitTest1
+    public class TestHomepage
     {
         [TestMethod]
         public void TestGetHomepage()
