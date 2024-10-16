@@ -3,8 +3,8 @@ trigger:
     include:
       - pre-production
 
-pool:
-  vmImage: 'Default'
+pool: Default
+
 
 variables:
   solution: '**/*.sln'
