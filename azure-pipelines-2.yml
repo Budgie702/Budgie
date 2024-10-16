@@ -34,4 +34,4 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*.csproj'
-    testRunTitle: 'Testing'
+    testRunTitle: 'Testing Suite'
