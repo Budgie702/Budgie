@@ -1,11 +1,7 @@
-# ASP.NET
-    
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
-- pre-production
+  branches:
+    include:
+      - pre-production
 
 pool: Default
 
@@ -37,4 +33,5 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*.csproj'
+    arguments: '--no-build --configuration $(buildConfiguration)'
     testRunTitle: 'Testing Suite'
