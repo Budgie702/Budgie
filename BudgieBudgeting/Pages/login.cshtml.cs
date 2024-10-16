@@ -73,7 +73,7 @@ namespace BudgieBudgeting.Pages.Shared
     public class Credential
     {
         [Required]
-        public required string Username { get; set; }
+        public required string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

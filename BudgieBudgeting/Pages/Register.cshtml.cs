@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Data.SqlClient;
-namespace BudgieBudgeting.Pages
+namespace BudgieBudgeting.Pages.Shared
 {
     public class RegisterModel : PageModel
     {
@@ -35,7 +35,7 @@ namespace BudgieBudgeting.Pages
                 using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
                 {
                     insertCommand.Parameters.AddWithValue("@Username", RegisterCredential.Username);
-                    insertCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
+                    insertCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email.ToLower());
                     insertCommand.Parameters.AddWithValue("@UserPassword", RegisterCredential.Password);
                     insertCommand.ExecuteNonQuery();
                 }
