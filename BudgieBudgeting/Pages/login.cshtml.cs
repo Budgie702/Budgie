@@ -12,9 +12,6 @@ namespace BudgieBudgeting.Pages.Shared
 
         public string? ErrorMessage { get; set; }
 
-        // Property to store the username temporarily
-        public string? UsernameToShow { get; set; }
-
         public void OnGet()
         {
         }
@@ -31,7 +28,7 @@ namespace BudgieBudgeting.Pages.Shared
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Email", Credential.Username); // Assuming this is the email
+                        command.Parameters.AddWithValue("@Email", Credential.Username); // Use Username for email
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -42,11 +39,8 @@ namespace BudgieBudgeting.Pages.Shared
 
                                 if (Credential.Password == password)
                                 {
-                                    // Store the username in the session instead of a cookie
+                                    // Store the username in the session
                                     HttpContext.Session.SetString("Username", username);
-
-                                    // Store the username in a property to access it in the Razor page
-                                    UsernameToShow = username;
 
                                     // Redirect to the homepage
                                     Response.Redirect("/Homepage");
@@ -62,10 +56,7 @@ namespace BudgieBudgeting.Pages.Shared
                             }
                         }
                     }
-
-                    connection.Close();
                 }
-
             }
         }
     }
@@ -73,7 +64,7 @@ namespace BudgieBudgeting.Pages.Shared
     public class Credential
     {
         [Required]
-        public required string Email { get; set; }
+        public required string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
