@@ -2,7 +2,7 @@
 {
     public class Customer
     {
-        int CustomerId;
+        /*int CustomerId;
         string Name;
         string Email;
         string Password;
@@ -12,6 +12,6 @@
         {
 
         }
-        initiali
+        initiali*/
     }
 }
