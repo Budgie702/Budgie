@@ -20,7 +20,9 @@ namespace BudgieBudgeting.Pages.Shared
                 return RedirectToPage("/Login");
             }
 
-            return Page(); // Return the page if the username is valid
+            return Page(); // Return the page if the username is valid 
+
+            //random comment test
         }
     }
 }
