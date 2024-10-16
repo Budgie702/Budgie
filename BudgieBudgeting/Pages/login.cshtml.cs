@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Data.SqlClient; // Updated namespace
-using System.Net;
+using Microsoft.Data.SqlClient;
 
 namespace BudgieBudgeting.Pages.Shared
 {
@@ -14,15 +12,18 @@ namespace BudgieBudgeting.Pages.Shared
 
         public string? ErrorMessage { get; set; }
 
+        // Property to store the username temporarily
+        public string? UsernameToShow { get; set; }
+
         public void OnGet()
         {
         }
+
         public void OnPost()
         {
-            
             if (ModelState.IsValid)
             {
-                string query = "SELECT Email, UserPassword FROM Customer WHERE Email = @Email";
+                string query = "SELECT Username, UserPassword FROM Customer WHERE Email = @Email";
 
                 using (SqlConnection connection = new SqlConnection(DatabaseConnection.Connection.ConnectionString))
                 {
@@ -30,17 +31,24 @@ namespace BudgieBudgeting.Pages.Shared
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Email", Credential.Username);
+                        command.Parameters.AddWithValue("@Email", Credential.Username); // Assuming this is the email
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                string email = reader.GetString(0);
+                                string username = reader.GetString(0); // Get the username
                                 string password = reader.GetString(1);
 
                                 if (Credential.Password == password)
                                 {
+                                    // Store the username in the session instead of a cookie
+                                    HttpContext.Session.SetString("Username", username);
+
+                                    // Store the username in a property to access it in the Razor page
+                                    UsernameToShow = username;
+
+                                    // Redirect to the homepage
                                     Response.Redirect("/Homepage");
                                 }
                                 else
@@ -54,7 +62,10 @@ namespace BudgieBudgeting.Pages.Shared
                             }
                         }
                     }
+
+                    connection.Close();
                 }
+
             }
         }
     }

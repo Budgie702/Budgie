@@ -5,57 +5,57 @@
 }
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Nathan Swan Pole</title>
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link rel="stylesheet" href="/css/site.css">
-        <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title" style="text-align:center">Login</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form method="post">
+<head>
+    <title>Nathan Swan Pole</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="text-align:center">Login</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post">
                             @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                             {
                                 <div class="alert alert-danger">@Model.ErrorMessage</div>
                             }
-                                <fieldset>
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" asp-for="Credential.Username" placeholder="YourName@example.com">
-                                        <span asp-validation-for="Credential.Username" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" type="password" asp-for="Credential.Password" placeholder="Password">
-                                        <span asp-validation-for="Credential.Password" class="text-danger"></span>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="remember" type="checkbox" value="Remember Me"> Remember Me
-                                        </label>
-                                    </div>
-                                <input style="background-color: #44b3b1"  class="btn btn-lg btn-success btn-block" type="submit" value="Login">
-                                    <div style="text-align:center; padding:4px;">Or</div>
-                                </fieldset>
-                            </form>
-                            @section Scripts {
-                                <partial name="_ValidationScriptsPartial" />
-                            }
-                            <form method="get" action="/Register">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" asp-for="Credential.Username" placeholder="YourName@example.com">
+                                    <span asp-validation-for="Credential.Username" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="password" asp-for="Credential.Password" placeholder="Password">
+                                    <span asp-validation-for="Credential.Password" class="text-danger"></span>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                                    </label>
+                                </div>
+                                <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                                <div style="text-align:center; padding:4px;">Or</div>
+                            </fieldset>
+                        </form>
+                        @section Scripts {
+                            <partial name="_ValidationScriptsPartial" />
+                        }
+                        <form method="get" action="/Register">
                             <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Register</button>
-                            </form>
-                            <hr />
-                        </div>
+                        </form>
+                        <hr />
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

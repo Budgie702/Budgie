@@ -1,9 +1,8 @@
 ﻿@page
 @model BudgieBudgeting.Pages.Update_AccountModel
 @{
-    ViewData["Title"] = "Update Account Detials";
+    ViewData["Title"] = "Update Account Details";
 }
-﻿
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,31 +19,27 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Update</h3>
+                        <h3 class="panel-title">Update Account</h3>
                     </div>
                     <div class="panel-body">
                         <form method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" type="email" placeholder="YourName@example.com">
-                                    <span  class="text-danger"></span>
+                                    <input class="form-control" type="email" placeholder="YourName@example.com" asp-for="Email" />
+                                    <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="text"  placeholder="Username">
-                                    <span  class="text-danger"></span>
+                                    <input class="form-control" type="text" placeholder="Username" asp-for="Username" value="@Model.Username" readonly />
+                                    <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password">
-                                    <span  class="text-danger"></span>
+                                    <input class="form-control" type="password" placeholder="Password" asp-for="Password" />
+                                    <span class="text-danger"></span>
                                 </div>
                                 <div class="checkbox">
+                                    <!-- Add any additional checkboxes here if needed -->
                                 </div>
                             </fieldset>
-                        </form>
-                        @section Scripts {
-                            <partial name="_ValidationScriptsPartial" />
-                        }
-                        <form method="get" action="/login">
                             <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Update</button>
                         </form>
                         <hr />
