@@ -19,7 +19,12 @@ namespace BudgieBudgeting.Pages.Shared
         }
         public void OnPost()
         {
-            
+            if (Credential == null)
+            {
+                ErrorMessage = "Credential is null";
+                return;
+            }
+
             if (ModelState.IsValid)
             {
                 string query = "SELECT Email, UserPassword FROM Customer WHERE Email = @Email";
@@ -30,7 +35,7 @@ namespace BudgieBudgeting.Pages.Shared
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Email", Credential.Username);
+                        command.Parameters.AddWithValue("@Email", Credential.Email);
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -41,7 +46,15 @@ namespace BudgieBudgeting.Pages.Shared
 
                                 if (Credential.Password == password)
                                 {
-                                    Response.Redirect("/Homepage");
+                                    if (Response != null)
+                                    {
+                                        Response.Redirect("/Homepage");
+                                    }
+                                    else
+                                    {
+                                        ErrorMessage = "Response object is null";
+                                    }
+                                   
                                 }
                                 else
                                 {
@@ -62,7 +75,7 @@ namespace BudgieBudgeting.Pages.Shared
     public class Credential
     {
         [Required]
-        public required string Username { get; set; }
+        public required string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

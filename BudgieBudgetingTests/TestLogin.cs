@@ -2,20 +2,38 @@ namespace BudgieBudgetingTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using BudgieBudgeting.Pages.Shared;
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Http;
+    using Moq;
 
     [TestClass]
     public class TestLogin
     {
+
+        [TestMethod]
+        public void TestLoginCode()
+        {
+            var loginTest = new loginModel
+            {
+                Credential = new Credential()
+                {
+                    Email = "dannyfinnegan60@gmail.com",
+                    Password = "Please work",
+                }
+            };
+
+            loginTest.OnPost();
+        }
+
         [TestMethod]
         public void TestGetLogin()
         {
             var logMod = new loginModel
             {
-                Credential = new Credential() // Assuming Credential has a parameterless constructor
+                Credential = new Credential()
                 {
-                    Username = "dannyfinnegan60@gmail.com",
+                    Email = "dannyfinnegan60@gmail.com",
                     Password = "Please work",
-                 
                 }
             };
 
