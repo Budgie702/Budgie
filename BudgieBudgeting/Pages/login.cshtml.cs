@@ -35,7 +35,7 @@ namespace BudgieBudgeting.Pages.Shared
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Email", Credential.Email);
+                        command.Parameters.AddWithValue("@Email", Credential.Email .ToLower());
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -63,7 +63,7 @@ namespace BudgieBudgeting.Pages.Shared
                             }
                             else
                             {
-                                ErrorMessage = "Invalid username";
+                                ErrorMessage = "Invalid Email";
                             }
                         }
                     }

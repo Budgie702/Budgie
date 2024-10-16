@@ -35,7 +35,7 @@ namespace BudgieBudgeting.Pages
                 using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
                 {
                     insertCommand.Parameters.AddWithValue("@Username", RegisterCredential.Username);
-                    insertCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email);
+                    insertCommand.Parameters.AddWithValue("@Email", RegisterCredential.Email.ToLower());
                     insertCommand.Parameters.AddWithValue("@UserPassword", RegisterCredential.Password);
                     insertCommand.ExecuteNonQuery();
                 }
