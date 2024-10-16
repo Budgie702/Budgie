@@ -10,7 +10,7 @@ namespace BudgieBudgeting.DatabaseItems
         public Database() { 
             DataSet dataset = InitializeDatabase();
             for (int i = 0; i < dataset.Tables[0].Rows.Count; i++) {
-                customers.Add(new Customer());
+                customers.Add(new Customer(dataset,i));
             }
         }
         public DataSet InitializeDatabase()

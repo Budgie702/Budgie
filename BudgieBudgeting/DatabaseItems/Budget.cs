@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using System.Data;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BudgieBudgeting.DatabaseItems
 {
@@ -11,13 +12,23 @@ namespace BudgieBudgeting.DatabaseItems
         List<Needs> needs;
         List<Wants> wants;
         List<Savings> savings;
-        public Budget()
+        public Budget(DataSet dataset, int placement)
         {
+            for (int i = 0; i < dataset.Tables[3].Rows.Count; i++)
+            {
+                /*if (Convert.ToInt64(dataset.Tables[].Rows[]) == Convert.ToInt64())
+                {
 
-        }
-        public void initialiseList()
-        {
+                }*/
+            }
+            for (int i = 0; i < dataset.Tables[4].Rows.Count; i++)
+            {
 
+            }
+            for(int i = 0; i < dataset.Tables[5].Rows.Count; i++)
+            {
+
+            }
         }
     }
 }
