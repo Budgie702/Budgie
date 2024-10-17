@@ -7,11 +7,11 @@ namespace BudgieBudgeting.Pages
     public class Update_Budget_IncomeModel : PageModel
     {
         [BindProperty]
-        public string BudgetAmount { get; set; }
+        public string? BudgetAmount { get; set; }
 
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
-        public string Username { get; private set; } // Property to hold the username
+        public string? Username { get; private set; } // Property to hold the username
 
         public void OnGet()
         {
