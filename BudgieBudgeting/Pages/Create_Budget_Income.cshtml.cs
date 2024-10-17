@@ -7,10 +7,10 @@ namespace BudgieBudgeting.Pages
     public class Create_Budget_IncomeModel : PageModel
     {
         [BindProperty]
-        public string BudgetAmount { get; set; }
+        public required string BudgetAmount { get; set; }
 
-        public string ErrorMessage { get; set; }
-        public string Username { get; private set; } // Property to hold the username
+        public string? ErrorMessage { get; set; }
+        public string? Username { get; private set; } // Property to hold the username
 
         public void OnGet()
         {

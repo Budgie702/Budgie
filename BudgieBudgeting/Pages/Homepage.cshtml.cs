@@ -6,7 +6,7 @@ namespace BudgieBudgeting.Pages.Shared
 {
     public class HomepageModel : PageModel
     {
-        public string Username { get; private set; } // Property to hold the username
+        public string? Username { get; private set; } // Property to hold the username
 
         public IActionResult OnGet()
         {

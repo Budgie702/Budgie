@@ -6,7 +6,7 @@ namespace BudgieBudgeting.Pages
 {
     public class Compare_Budget_and_SpendModel : PageModel
     {
-        public string Username { get; private set; } // Property to hold the username
+        public string? Username { get; private set; } // Property to hold the username
 
         public void OnGet()
         {

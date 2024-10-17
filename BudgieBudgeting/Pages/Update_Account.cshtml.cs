@@ -7,9 +7,9 @@ namespace BudgieBudgeting.Pages
     public class Update_AccountModel : PageModel
     {
         // Properties to hold user account details
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; } // Consider using a more secure approach for handling passwords
+        public required string Email { get; set; }
+        public required string Username { get; set; }
+        public required string Password { get; set; } // Consider using a more secure approach for handling passwords
 
         public void OnGet()
         {

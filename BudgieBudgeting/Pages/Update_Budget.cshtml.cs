@@ -13,10 +13,10 @@ namespace BudgieBudgeting.Pages
         public List<string> Wants { get; set; } = new List<string>();
         public List<string> Savings { get; set; } = new List<string>();
 
-        public string Username { get; private set; } // Property to hold the username
+        public string? Username { get; private set; } // Property to hold the username
 
         // This method runs when the page is loaded
-        public async Task OnGetAsync()
+        public void OnGet()
         {
             // Retrieve the username from the cookie
             Username = HttpContext.Session.GetString("Username"); // Use the same key you used when setting the session
@@ -45,7 +45,7 @@ namespace BudgieBudgeting.Pages
         }
 
         // This method handles the form submission when the update button is clicked
-        public async Task<IActionResult> OnPostAsync(string[] Needs, string[] Wants, string[] Savings)
+        public IActionResult OnPost(string[] Needs, string[] Wants, string[] Savings)
         {
             // TODO: Connect to your database here to update the Needs, Wants, and Savings
             // You can use the Username variable for your queries

@@ -11,7 +11,7 @@ namespace BudgieBudgeting.Pages
         public List<string> Wants { get; set; } = new List<string>();
         public List<string> Savings { get; set; } = new List<string>();
 
-        public string Username { get; private set; } // Property to hold the username
+        public string? Username { get; private set; } // Property to hold the username
 
         public void OnGet()
         {
