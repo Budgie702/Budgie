@@ -40,7 +40,7 @@ namespace BudgieBudgetingTests
                 Credential = new Credential()
                 {
                     Email = "dannyfinnegan60@gmail.com",
-                    Password = "Please work",
+                    Password = "Please wor",
                 }
             };
 

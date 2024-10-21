@@ -10,7 +10,7 @@ namespace BudgieBudgeting.Pages
 		[BindProperty]
 		public required DeleteCredential DeleteCredential { get; set; }
 
-		public required string ErrorMessage { get; set; }
+		public string? ErrorMessage { get; set; }
 
         public void OnPost()
         {
