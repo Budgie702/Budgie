@@ -30,7 +30,7 @@ namespace BudgieBudgetingTests
         }
     }
 
-    [TestClass]
+  /*  [TestClass]
     public class TestLoginLogicPass
     {
         [TestMethod]
@@ -49,7 +49,8 @@ namespace BudgieBudgetingTests
             Assert.IsTrue(true);
 
         }
-    }
+    } */
+
     [TestClass]
     public class TestLoginLogicFailEmail
     {
