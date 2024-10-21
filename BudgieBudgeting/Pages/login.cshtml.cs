@@ -2,14 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Http; // Ensure this is included for session handling
+using Microsoft.AspNetCore.Http;
 
 namespace BudgieBudgeting.Pages.Shared
 {
-    public class loginModel : PageModel // Renamed to follow C# conventions (PascalCase)
+    public class loginModel : PageModel
     {
         [BindProperty]
-        public Credential Credential { get; set; } = new Credential(); // Initialize to avoid null reference
+        public Credential Credential { get; set; } = new Credential();
 
         public string? ErrorMessage { get; set; }
 
@@ -30,48 +30,45 @@ namespace BudgieBudgeting.Pages.Shared
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Email", Credential.Email); // Use Email for the query
+                        command.Parameters.AddWithValue("@Email", Credential.Email);
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                string username = reader.GetString(0); // Get the username
+                                string username = reader.GetString(0);
                                 string password = reader.GetString(1);
 
-                                if (Credential.Password == password) // Compare passwords
+                                if (Credential.Password == password)
                                 {
-                                    // Store the username in the session
                                     HttpContext.Session.SetString("Username", username);
-
-                                    // Redirect to the homepage
-                                    return RedirectToPage("/Homepage"); // Use RedirectToPage instead of Response.Redirect
+                                    return RedirectToPage("/Homepage");
                                 }
                                 else
                                 {
-                                    ErrorMessage = "Invalid password"; // Set error message for invalid password
+                                    ErrorMessage = "Invalid password";
                                 }
                             }
                             else
                             {
-                                ErrorMessage = "Invalid email"; // Set error message for invalid email
+                                ErrorMessage = "Invalid email";
                             }
                         }
                     }
                 }
             }
-            return Page(); // Return to the same page if validation fails or an error occurs
+            return Page();
         }
     }
 
     public class Credential
     {
         [Required]
-        [EmailAddress] // Email format validation
-        public string Email { get; set; } = string.Empty; // Changed Username to Email
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = string.Empty; // Initialize to avoid null reference
+        public string Password { get; set; } = string.Empty;
     }
 }

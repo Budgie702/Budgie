@@ -7,6 +7,8 @@ namespace BudgieBudgetingTests
     using Moq;
     using Microsoft.Data.SqlClient;
     using BudgieBudgeting;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Microsoft.AspNetCore.Mvc;
 
     [TestClass]
     public class TestLogin
@@ -30,12 +32,20 @@ namespace BudgieBudgetingTests
         }
     }
 
-  /*  [TestClass]
+    [TestClass]
     public class TestLoginLogicPass
     {
         [TestMethod]
         public void TestLoginLogicMethod()
         {
+            // Mocking HttpContext and Session
+            var mockHttpContext = new Mock<HttpContext>();
+            var mockSession = new Mock<ISession>();
+
+            // Setting up the session mock
+            mockHttpContext.Setup(ctx => ctx.Session).Returns(mockSession.Object);
+
+            // Creating the loginModel instance
             var logMod = new loginModel
             {
                 Credential = new Credential()
@@ -45,11 +55,24 @@ namespace BudgieBudgetingTests
                 }
             };
 
-            logMod.OnPost();
-            Assert.IsTrue(true);
+            // Assigning the mocked HttpContext to the PageModel's HttpContext
+            logMod.PageContext.HttpContext = mockHttpContext.Object;
 
+            // Mocking ModelState to be valid
+            var modelState = new ModelStateDictionary();
+            modelState.SetModelValue("Credential.Email", "dannyfinnegan60@gmail.com", "dannyfinnegan60@gmail.com");
+            modelState.SetModelValue("Credential.Password", "Please work", "Please work");
+            logMod.ModelState.Merge(modelState);
+
+            // Ensure ModelState is valid
+            logMod.ModelState.ClearValidationState("Credential");
+            logMod.ModelState.MarkFieldValid("Credential.Email");
+            logMod.ModelState.MarkFieldValid("Credential.Password");
+
+            var result = logMod.OnPost();
+            Assert.IsInstanceOfType(result, typeof(IActionResult));
         }
-    } */
+    }
 
     [TestClass]
     public class TestLoginLogicFailEmail
