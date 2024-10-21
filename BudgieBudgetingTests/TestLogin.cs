@@ -25,6 +25,7 @@ namespace BudgieBudgetingTests
             };
 
             logMod.OnGet();
+
             Assert.IsTrue(true);
         }
     }
