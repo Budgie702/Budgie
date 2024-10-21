@@ -30,7 +30,7 @@ namespace BudgieBudgetingTests
     }
 
     [TestClass]
-    public class TestLoginLogic
+    public class TestLoginLogicPass
     {
         [TestMethod]
         public void TestLoginLogicMethod()
@@ -46,6 +46,46 @@ namespace BudgieBudgetingTests
 
             logMod.OnPost();
             Assert.IsTrue(true);
+
+        }
+    }
+    [TestClass]
+    public class TestLoginLogicFailEmail
+    {
+        [TestMethod]
+        public void TestLoginLogicMethod()
+        {
+            var logMod = new loginModel
+            {
+                Credential = new Credential()
+                {
+                    Email = "ThisShouldFail@gmail.com",
+                    Password = "Please Dont Work",
+                }
+            };
+
+            logMod.OnPost();
+            Assert.AreEqual("Invalid email", logMod.ErrorMessage);
+
+        }
+    }
+    [TestClass]
+    public class TestLoginLogicFailPassword
+    {
+        [TestMethod]
+        public void TestLoginLogicMethod()
+        {
+            var logMod = new loginModel
+            {
+                Credential = new Credential()
+                {
+                    Email = "dannyfinnegan60@gmail.com",
+                    Password = "Please Dont Work",
+                }
+            };
+
+            logMod.OnPost();
+            Assert.AreEqual("Invalid password", logMod.ErrorMessage);
 
         }
     }
