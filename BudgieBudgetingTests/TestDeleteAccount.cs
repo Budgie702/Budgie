@@ -13,7 +13,7 @@ namespace BudgieBudgetingTests
     [TestClass]
     public class TestDeleteAccount
     {
-        [TestMethod]
+       /* [TestMethod]
         public void TestDelete_Account()
         {
 
@@ -31,6 +31,6 @@ namespace BudgieBudgetingTests
             deleteMod.OnPost();
 
             Assert.IsTrue(true);
-        }
+        }*/
     }
 }

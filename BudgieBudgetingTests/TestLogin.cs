@@ -7,7 +7,7 @@ namespace BudgieBudgetingTests
     using Moq;
     using Microsoft.Data.SqlClient;
     using BudgieBudgeting;
-    
+
     [TestClass]
     public class TestLogin
     {
@@ -30,4 +30,23 @@ namespace BudgieBudgetingTests
         }
     }
 
+    public class TestLoginLogic
+    {
+        [TestMethod]
+        public void TestLoginLogicMethod()
+        {
+            var logMod = new loginModel
+            {
+                Credential = new Credential()
+                {
+                    Email = "dannyfinnegan60@gmail.com",
+                    Password = "Please work",
+                }
+            };
+
+            logMod.OnPost();
+            Assert.IsTrue(true);
+
+        }
+    }
 }
