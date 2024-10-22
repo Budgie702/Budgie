@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BudgieBudgeting.Pages
 {
-	public class Delete_AccountModel : PageModel
-	{
-		[BindProperty]
-		public required DeleteCredential DeleteCredential { get; set; }
+    public class Delete_AccountModel : PageModel
+    {
+        [BindProperty]
+        public required DeleteCredential DeleteCredential { get; set; }
 
-		public required string ErrorMessage { get; set; }
+        public required string ErrorMessage { get; set; }
 
-        public void OnPost()
+        public virtual void OnPost()
         {
             string DeleteQuery = "DELETE FROM dbo.Customer WHERE email = @Email AND UserPassword = @UserPassword";
             int rowsDeleted = 0;
@@ -32,7 +32,15 @@ namespace BudgieBudgeting.Pages
 
             if (rowsDeleted > 0)
             {
-                 Response.Redirect("/Homepage");
+                try
+                { 
+                    Response.Redirect("/Homepage"); 
+                }
+                catch
+                {
+
+                }
+
             }
             else
             {
@@ -40,11 +48,11 @@ namespace BudgieBudgeting.Pages
                 return;
             }
 
-           
-        }
-	}
 
-		public class DeleteCredential
+        }
+    }
+
+    public class DeleteCredential
     {
         [Required]
         [DataType(DataType.EmailAddress)]
