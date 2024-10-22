@@ -11,7 +11,7 @@ namespace BudgieBudgeting.Pages.Shared
 
         public required string ErrorMessage { get; set; }
 
-        public void OnPost()
+        public virtual void OnPost()
         {
             string checkEmailQuery = "SELECT COUNT(*) FROM dbo.Customer WHERE email = @Email";
             string insertQuery = "INSERT INTO dbo.Customer (Username, email, UserPassword) VALUES (@Username, @Email, @UserPassword)";
