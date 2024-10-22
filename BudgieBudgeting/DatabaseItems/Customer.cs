@@ -13,7 +13,13 @@ namespace BudgieBudgeting.DatabaseItems
         public Customer(DataSet dataset,int Customerplacement)
         {
             InitializeBudget(dataset, Customerplacement);
-
+            for(int i = 0; i < dataset.Tables[0].Rows.Count; i++){
+                SetCustomerId(Convert.ToInt32(dataset.Tables[0].Rows[i][0]));
+                SetName(Convert.ToString(dataset.Tables[0].Rows[i][1]));
+                SetPassword(Convert.ToString(dataset.Tables[0].Rows[i][2]));
+                SetEmail(Convert.ToString(dataset.Tables[0].Rows[i][3]));
+                SetIncome((float)Convert.ToDecimal(dataset.Tables[0].Rows[i][4]));
+            }
         }
         //initializing budget
         private void InitializeBudget(DataSet dataset, int Customerplacement)
