@@ -93,6 +93,6 @@ namespace BudgieBudgeting.DatabaseItems
                 }
             }
         }
-        //Sql Stuff
+        
     }
 }
