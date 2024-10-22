@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http; // Required for accessing sessions
+using Microsoft.Data.SqlClient;
 
 namespace BudgieBudgeting.Pages
 {
@@ -10,38 +10,65 @@ namespace BudgieBudgeting.Pages
         public required string BudgetAmount { get; set; }
 
         public string? ErrorMessage { get; set; }
-        public string? Username { get; private set; } // Property to hold the username
+        public string? Username { get; private set; } // Property to hold the username from session
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
             // Retrieve the username from the session
             Username = HttpContext.Session.GetString("Username");
 
-            // Optional: Check if username is null or empty
+            // Optional: Check if username is null or empty and handle it
             if (string.IsNullOrEmpty(Username))
             {
-                // Handle the case where the username is not found in the session
-                // For example, redirect to the login page
-                RedirectToPage("/Login");
+                return RedirectToPage("/Login");
             }
+
+            return Page();
         }
 
         public IActionResult OnPost()
         {
+            // Retrieve the username from the session
+            Username = HttpContext.Session.GetString("Username");
+
+            if (string.IsNullOrEmpty(Username))
+            {
+                // If the user is not logged in, redirect to the login page
+                return RedirectToPage("/Login");
+            }
+
             if (string.IsNullOrEmpty(BudgetAmount))
             {
                 ErrorMessage = "Budget amount cannot be empty.";
                 return Page(); // Return the page to show the error
             }
-            else
-            {
-                // Handle form submission logic here, like saving the budget to the database
-                // You can use the Username variable for your database logic
-                ErrorMessage = null;
 
-                // Redirect to a success page or another page after handling the budget
-                return RedirectToPage("/Success");
+            // SQL query to update the income for the user based on username
+            string updateIncomeQuery = "UPDATE dbo.Customer SET Income = @Income WHERE Username = @Username";
+
+            using (SqlConnection connection = DatabaseConnection.Connection)
+            {
+                connection.Open();
+
+                using (SqlCommand updateCommand = new SqlCommand(updateIncomeQuery, connection))
+                {
+                    // Add parameters for income and username
+                    updateCommand.Parameters.AddWithValue("@Income", BudgetAmount);
+                    updateCommand.Parameters.AddWithValue("@Username", Username);
+
+                    int rowsAffected = updateCommand.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        ErrorMessage = "Error: No customer found with the provided username.";
+                        return Page();
+                    }
+                }
+                connection.Close();
             }
+
+            // After updating the income, redirect to a success page or any other desired page
+            return RedirectToPage("/Create_Budget");
         }
     }
 }
