@@ -9,7 +9,7 @@ namespace BudgieBudgetingTests
     {
         [TestMethod]
         public void Register()
-        {/*
+        {
             var registerTest = new RegisterModel
             {
                 RegisterCredential = new RegisterCredential()
@@ -22,7 +22,6 @@ namespace BudgieBudgetingTests
             };
             registerTest.OnPost();
         }
-    }*/
-        }
     }
 }
+
