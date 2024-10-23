@@ -1,0 +1,13 @@
+drop table [dbo].[Need]
+-- Create the Need table
+CREATE TABLE [dbo].[Need] (
+    NeedID INT NOT NULL PRIMARY KEY, -- Primary Key
+    BudgetID INT FOREIGN KEY REFERENCES [dbo].[Budget](BudgetID) -- Foreign Key
+);
+
+-- Create the NeedDetails table to store the array of decimals
+CREATE TABLE [dbo].[NeedDetails] (
+    NeedDetailID INT NOT NULL PRIMARY KEY, -- Primary Key
+    NeedID INT FOREIGN KEY REFERENCES [dbo].[Need](NeedID), -- Foreign Key
+    NeedValue DECIMAL NULL
+);
