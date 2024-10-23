@@ -1,24 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Data.SqlClient; // Updated namespace
-using System.Net;
+using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
 
-namespace BudgieBudgeting.Pages
+namespace BudgieBudgeting.Pages.Shared
 {
     public class loginModel : PageModel
     {
         [BindProperty]
-        public required Credential Credential { get; set; }
+        public Credential Credential { get; set; } = new Credential();
 
         public string? ErrorMessage { get; set; }
 
-        public void OnPost()
+        public void OnGet()
+        {
+            // This method is intentionally left empty; it can be used to prepopulate fields if needed.
+        }
+
+        public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                string query = "SELECT Email, UserPassword FROM Customer WHERE Email = @Email";
+                string query = "SELECT Username, UserPassword FROM Customer WHERE Email = @Email";
 
                 using (SqlConnection connection = new SqlConnection(DatabaseConnection.Connection.ConnectionString))
                 {
@@ -26,18 +30,19 @@ namespace BudgieBudgeting.Pages
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Email", Credential.Username);
+                        command.Parameters.AddWithValue("@Email", Credential.Email);
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                string email = reader.GetString(0);
+                                string username = reader.GetString(0);
                                 string password = reader.GetString(1);
 
                                 if (Credential.Password == password)
                                 {
-                                    Response.Redirect("/Homepage");
+                                    HttpContext.Session.SetString("Username", username);
+                                    return RedirectToPage("/Homepage");
                                 }
                                 else
                                 {
@@ -46,22 +51,24 @@ namespace BudgieBudgeting.Pages
                             }
                             else
                             {
-                                ErrorMessage = "Invalid username";
+                                ErrorMessage = "Invalid email";
                             }
                         }
                     }
                 }
             }
+            return Page();
         }
     }
 
     public class Credential
     {
         [Required]
-        public required string Username { get; set; }
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]
-        public required string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

@@ -25,6 +25,10 @@
                     </div>
                     <div class="panel-body">
                         <form method="post">
+                            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@Model.ErrorMessage</div>
+                            }
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" asp-for=DeleteCredential.Email type="email" placeholder="YourName@example.com">
@@ -34,7 +38,7 @@
                                     <input class="form-control" asp-for=DeleteCredential.Password type="password" placeholder="Password">
                                     <span asp-validation-for=DeleteCredential.Password class="text-danger"></span>
                                 </div>
-                                <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Delete</button>
+                                <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" onclick="confirmDelete()">Delete</button>
                             </fieldset>
                         </form>
                         @section Scripts {

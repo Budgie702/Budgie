@@ -1,40 +1,51 @@
 namespace BudgieBudgeting
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddRazorPages();
+            // Add services to the container.
+            builder.Services.AddRazorPages();
 
-			var app = builder.Build();
+            // Add session services
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout period
+                options.Cookie.HttpOnly = true; // Make the session cookie HttpOnly for security
+                options.Cookie.IsEssential = true; // Required for GDPR compliance
+            });
 
-			// Configure the HTTP request pipeline.
-			if (!app.Environment.IsDevelopment())
-			{
-				app.UseExceptionHandler("/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
+            var app = builder.Build();
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-			app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-			app.UseAuthorization();
+            app.UseRouting();
 
-			app.MapRazorPages();
+            app.UseAuthorization();
 
-			app.MapGet("/", context =>
-			{
-				context.Response.Redirect("/login");
-				return Task.CompletedTask;
-			});
+            // Enable session middleware
+            app.UseSession();
 
-			app.Run();
-		}
-	}
+            app.MapRazorPages();
+
+            app.MapGet("/", context =>
+            {
+                context.Response.Redirect("/login");
+                return Task.CompletedTask;
+            });
+
+            app.Run();
+        }
+    }
 }
