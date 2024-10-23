@@ -53,5 +53,34 @@ namespace BudgieBudgeting.DatabaseItems
             connection.Close();
             return dataSet;
         }
+
+        public void AddCustomer(DataTable table){
+            string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            SqlCommand cmd = new SqlCommand("Insert into Customers(CustomerId,Username,Email,UserPassword) values(" +SetNewCustomerId() + "'," + table.Rows[0][0] + "'," + table.Rows[0][1] + "'," + table.Rows[0][2] + "'");
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        private static int SetNewCustomerId(){
+            string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = "Select MAX(CustomerId) from Customer";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            dataAdapter.Fill(ds);
+            connection.Close();
+            if (ds.Tables[0].Rows[0][0] != null)
+            {
+                return Convert.ToInt32(ds.Tables[0].Rows[0][0]) + 1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
     }
 }

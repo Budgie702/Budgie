@@ -14,13 +14,11 @@ namespace BudgieBudgeting.DatabaseItems
         public Customer(DataSet dataset,int Customerplacement)
         {
             InitializeBudget(dataset, Customerplacement);
-            for(int i = 0; i < dataset.Tables[0].Rows.Count; i++){
-                SetCustomerId(Convert.ToInt32(dataset.Tables[0].Rows[i][0]));
-                SetName(Convert.ToString(dataset.Tables[0].Rows[i][1]));
-                SetPassword(Convert.ToString(dataset.Tables[0].Rows[i][2]));
-                SetEmail(Convert.ToString(dataset.Tables[0].Rows[i][3]));
-                SetIncome((float)Convert.ToDecimal(dataset.Tables[0].Rows[i][4]));
-            }
+            SetCustomerId(Convert.ToInt32(dataset.Tables[0].Rows[Customerplacement][0]));
+            SetName(Convert.ToString(dataset.Tables[0].Rows[Customerplacement][1]));
+            SetPassword(Convert.ToString(dataset.Tables[0].Rows[Customerplacement][2]));
+            SetEmail(Convert.ToString(dataset.Tables[0].Rows[Customerplacement][3]));
+            SetIncome((float)Convert.ToDecimal(dataset.Tables[0].Rows[Customerplacement][4]));
         }
         //initializing budget
         private void InitializeBudget(DataSet dataset, int Customerplacement)
@@ -80,14 +78,6 @@ namespace BudgieBudgeting.DatabaseItems
             return this.budget;
         }
         //Sql Stuff
-        public void AddCustomer(DataTable table){
-            string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            SqlCommand cmd = new SqlCommand("Insert into Customers(Customer,Username,Email,UserPassword,Income) values");
-            cmd.ExecuteNonQuery();
-            connection.Close();
-        }
         public void UpdateCustomer(){
             string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             SqlConnection connection = new SqlConnection(connectionString);
@@ -112,11 +102,19 @@ namespace BudgieBudgeting.DatabaseItems
             cmd.ExecuteNonQuery();
             connection.Close();
         }
-        private int SetNewCustomerId(){
+        public void AddBudget(DataTable table){
             string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = "Select MAX(supplier_id) from suppliers";
+            SqlCommand cmd = new SqlCommand("Insert into Budget(BudgetId,CustomerId,NeedsBudget,) values()");
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
+        private static int SetNewBudgetId(){
+            string connectionString = "Server=tcp:budgie-budgeting.database.windows.net,1433;Initial Catalog=Budgie;Persist Security Info=False;User ID=Budgie;Password=Budgeting12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = "Select MAX(CustomerId) from Customer";
             SqlCommand cmd = new SqlCommand(query, connection);
             SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
             DataSet ds = new DataSet();
