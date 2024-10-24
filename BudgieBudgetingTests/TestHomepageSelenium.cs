@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BudgieBudgetingTests
 {
     [TestClass]
-    public class TestLoginSelenium
+    public class TestHomepageSelenium
     {
         private IWebDriver driver;
         private Webdriver WebDriver;
