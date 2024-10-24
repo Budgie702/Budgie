@@ -9,24 +9,25 @@ using System.Threading.Tasks;
 namespace BudgieBudgetingTests
 {
     [TestClass]
-    public class TestHomepageSelenium
+    public class TestRegisterSelenium
     {
         private IWebDriver driver;
         private Webdriver WebDriver;
 
 
         [TestMethod]
-        public void TestLogin()
+        public void TestRegister()
         {
             WebDriver = new Webdriver();
-            WebDriver.retryableSeleniumURL("http://localhost:5185/Login");
+            WebDriver.retryableSeleniumURL("http://localhost:5185/Register");
             WebDriver.retryableSeleniumElementSend("email", "dannyfinnegan60@gmail.com");
+            WebDriver.retryableSeleniumElementSend("user", "Danny");
             WebDriver.retryableSeleniumElementSend("password", "Please work");
             WebDriver.retryableSeleniumElementClick("login");
             WebDriver.quit();
         }
 
-        [TestMethod]
+       /* [TestMethod]
         public void TestLoginFailEmail()
         {
             WebDriver = new Webdriver();
@@ -54,7 +55,7 @@ namespace BudgieBudgetingTests
             WebDriver = new Webdriver();
             WebDriver.retryableSeleniumURL("http://localhost:5185/Login");
             WebDriver.quit();
-        }
+        }*/
     }
 }
 
