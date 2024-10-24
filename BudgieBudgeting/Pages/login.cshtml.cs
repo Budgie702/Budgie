@@ -31,6 +31,7 @@ namespace BudgieBudgeting.Pages.Shared
             {
                 string query = "SELECT Username, UserPassword FROM Customer WHERE Email = @Email";
 
+                Console.WriteLine(_databaseConnection.Connection.ConnectionString);
                 using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
                 {
                     connection.Open();

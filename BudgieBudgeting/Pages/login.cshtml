@@ -31,11 +31,11 @@
                             }
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" type="text" asp-for="Credential.Email" placeholder="YourName@example.com" />
+                                    <input id="email" class="form-control" type="text" asp-for="Credential.Email" placeholder="YourName@example.com" />
                                     <span asp-validation-for="Credential.Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="password" asp-for="Credential.Password" placeholder="Password" />
+                                    <input id="password" class="form-control" type="password" asp-for="Credential.Password" placeholder="Password" />
                                     <span asp-validation-for="Credential.Password" class="text-danger"></span>
                                 </div>
                                 <div class="checkbox">
@@ -43,7 +43,7 @@
                                         <input name="remember" type="checkbox" value="Remember Me" /> Remember Me
                                     </label>
                                 </div>
-                                <input style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Login" />
+                                <input id="login" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" type="submit" value="Login" />
                                 <div style="text-align:center; padding:4px;">Or</div>
                             </fieldset>
                         </form>

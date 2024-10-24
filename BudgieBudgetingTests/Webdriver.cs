@@ -13,7 +13,22 @@ namespace BudgieBudgetingTests
         IWebDriver driver;
         public Webdriver()
         {
-            driver = new ChromeDriver("chromedriver.exe");
+            try
+            {
+                var chromeOptions = new ChromeOptions();
+                chromeOptions.AddArgument("--window-size=1920,1080");
+                driver = new ChromeDriver(chromeOptions);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Driver not found");
+            }
+        }
+
+        public void quit()
+        {
+            Thread.Sleep(1000);
+            driver.Quit();
         }
 
         public void retryableSeleniumURL(string url)
@@ -24,12 +39,12 @@ namespace BudgieBudgetingTests
                 try
                 {
                     driver.Navigate().GoToUrl(url);
-                    Thread.Sleep(1000);
-                    retries++;
+                    break;
                 }
                 catch (Exception e)
                 {
-
+                    Thread.Sleep(1000);
+                    retries++;
                 }
             }
         }
@@ -41,15 +56,12 @@ namespace BudgieBudgetingTests
                 try
                 {
                     driver.FindElement(By.Id(id)).SendKeys(text);
-                    Thread.Sleep(1000);
-                    retries++;
+                    break;
                 }
                 catch (Exception e)
                 {
-                    if (retries == 3)
-                    {
-                        throw new Exception("Element not found" + id);
-                    }
+                    Thread.Sleep(1000);
+                    retries++;
                 }
             }
         }
@@ -62,17 +74,33 @@ namespace BudgieBudgetingTests
                 try
                 {
                     driver.FindElement(By.Id(id)).Click();
-                    Thread.Sleep(1000);
-                    retries++;
+                    break;
                 }
                 catch (Exception e)
                 {
-                    if (retries == 3)
-                    {
-                        throw new Exception("Element not found" + id);
-                    }
+                    Thread.Sleep(1000);
+                    retries++;
                 }
             }
         }
+
+        public void retryableSeleniumFailElement_Check (string id)
+        {
+            int retries = 0;
+            while (retries < 3)
+            {
+                try
+                {
+                    driver.FindElement(By.Id(id)).Click();
+                    break;
+                }
+                catch (Exception e)
+                {
+                    Thread.Sleep(1000);
+                    retries++;
+                }
+            }
+        }
+
     }
 }
