@@ -1,15 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http; // Required for accessing session
+using Microsoft.AspNetCore.Http;
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgieBudgeting.Pages
 {
     public class Update_AccountModel : PageModel
     {
+
+        private readonly DatabaseConnection _databaseConnection;
+
+        public Update_AccountModel(DatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
         // Properties to hold user account details
-        public required string? Email { get; set; }
-        public required string? Username { get; set; }
-        public required string? Password { get; set; } // Consider using a more secure approach for handling passwords
+        public string? Email { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; } // Consider using a more secure approach for handling passwords
+
+        public string? ErrorMessage { get; set; }
 
         public virtual void OnGet()
         {
@@ -31,24 +44,52 @@ namespace BudgieBudgeting.Pages
             */
         }
 
-        public IActionResult OnPost(string email, string username, string password)
+        public IActionResult OnPost(UpdateCredential credential)
         {
-            // TODO: Handle form submission to update the user account
-            // Validate and save the updated information to your database
-            /*
-            using (var context = new YourDbContext())
+            if (!ModelState.IsValid)
             {
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Username == username);
-                if (user != null)
+                return Page();
+            }
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                string query = "UPDATE dbo.Customer SET Email = @Email, Username = @Username, UserPassword = @Password WHERE Email = @Email";
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    user.Email = email;
-                    // Consider updating password securely, e.g., hashing it
-                    await context.SaveChangesAsync();
+                    command.Parameters.AddWithValue("@Email", credential.Email);
+                    command.Parameters.AddWithValue("@Username", credential.Username);
+                    command.Parameters.AddWithValue("@Password", credential.Password);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    connection.Close();
+
+                    if (rowsAffected > 0)
+                    {
+                        return RedirectToPage("Homepage");
+                    }
+                    else
+                    {
+                        ErrorMessage = "Invalid password";
+                    }
                 }
             }
-            */
 
-            return RedirectToPage(); // Redirect after successful update
+            ErrorMessage = "Invalid email";
+            return Page();
         }
     }
+    public class UpdateCredential
+    {
+        [Required]
+        public string Username { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+    }
 }
+

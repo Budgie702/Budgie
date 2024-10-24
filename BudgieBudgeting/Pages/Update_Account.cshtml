@@ -23,24 +23,28 @@
                     </div>
                     <div class="panel-body">
                         <form method="post">
+                            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@Model.ErrorMessage</div>
+                            }
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" type="email" placeholder="YourName@example.com" asp-for="Email" />
+                                    <input id="email" class="form-control" type="email" placeholder="YourName@example.com" asp-for="Email" />
                                     <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Username" asp-for="Username" value="@Model.Username" readonly />
+                                    <input id="user" class="form-control" type="text" placeholder="Username" asp-for="Username" value="@Model.Username" />
                                     <span class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="password" placeholder="Password" asp-for="Password" />
+                                    <input id="password" class="form-control" type="password" placeholder="Password" asp-for="Password" />
                                     <span class="text-danger"></span>
                                 </div>
                                 <div class="checkbox">
                                     <!-- Add any additional checkboxes here if needed -->
                                 </div>
                             </fieldset>
-                            <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Update</button>
+                            <button id="update" type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Update</button>
                         </form>
                         <hr />
                     </div>
