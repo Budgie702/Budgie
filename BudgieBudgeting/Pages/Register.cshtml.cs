@@ -10,13 +10,18 @@ namespace BudgieBudgeting.Pages.Shared
         public required RegisterCredential RegisterCredential { get; set; }
 
         public required string ErrorMessage { get; set; }
+        private readonly DatabaseConnection _databaseConnection;
 
+        public RegisterModel(DatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
         public virtual void OnPost()
         {
             string checkEmailQuery = "SELECT COUNT(*) FROM dbo.Customer WHERE email = @Email";
             string insertQuery = "INSERT INTO dbo.Customer (Username, email, UserPassword) VALUES (@Username, @Email, @UserPassword)";
 
-            using (SqlConnection connection = DatabaseConnection.Connection)
+            using (SqlConnection connection = _databaseConnection.Connection)
             {
                 connection.Open();
 

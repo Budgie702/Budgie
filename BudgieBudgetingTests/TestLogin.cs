@@ -17,7 +17,8 @@ namespace BudgieBudgetingTests
         [TestMethod]
         public void TestGetLogin()
         {
-            var logMod = new loginModel
+            var databaseConnection = new Mock<DatabaseConnection>().Object;
+            var logMod = new loginModel(databaseConnection)
             {
                 Credential = new Credential()
                 {
@@ -46,7 +47,8 @@ namespace BudgieBudgetingTests
             mockHttpContext.Setup(ctx => ctx.Session).Returns(mockSession.Object);
 
             // Creating the loginModel instance
-            var logMod = new loginModel
+            var databaseConnection = new Mock<DatabaseConnection>().Object;
+            var logMod = new loginModel(databaseConnection)
             {
                 Credential = new Credential()
                 {
@@ -80,7 +82,8 @@ namespace BudgieBudgetingTests
         [TestMethod]
         public void TestLoginLogicMethod()
         {
-            var logMod = new loginModel
+            var databaseConnection = new Mock<DatabaseConnection>().Object;
+            var logMod = new loginModel(databaseConnection)
             {
                 Credential = new Credential()
                 {
@@ -100,7 +103,8 @@ namespace BudgieBudgetingTests
         [TestMethod]
         public void TestLoginLogicMethod()
         {
-            var logMod = new loginModel
+            var databaseConnection = new Mock<DatabaseConnection>().Object;
+            var logMod = new loginModel(databaseConnection)
             {
                 Credential = new Credential()
                 {

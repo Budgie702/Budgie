@@ -8,6 +8,13 @@ namespace BudgieBudgeting.Pages.Shared
 {
     public class loginModel : PageModel
     {
+        private readonly DatabaseConnection _databaseConnection;
+
+        public loginModel(DatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
+
         [BindProperty]
         public Credential Credential { get; set; } = new Credential();
 
@@ -24,7 +31,7 @@ namespace BudgieBudgeting.Pages.Shared
             {
                 string query = "SELECT Username, UserPassword FROM Customer WHERE Email = @Email";
 
-                using (SqlConnection connection = new SqlConnection(DatabaseConnection.Connection.ConnectionString))
+                using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
                 {
                     connection.Open();
 

@@ -2,14 +2,17 @@ namespace BudgieBudgeting
 {
     using System.Configuration;
     using System.Collections.Specialized;
-    public static class DatabaseConnection
+    public class DatabaseConnection
     {
-        static IConfigurationRoot Configuration { get; } = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
+        private readonly string _connectionString;
 
-        static string? ConnectionString = Configuration.GetConnectionString("BudgieBudgetingContext");
-        public static Microsoft.Data.SqlClient.SqlConnection Connection { get; } = new Microsoft.Data.SqlClient.SqlConnection(ConnectionString!);
+        public DatabaseConnection(string connectionString)
+        {
+            _connectionString = connectionString;
+            Console.WriteLine(_connectionString);
+            Connection = new Microsoft.Data.SqlClient.SqlConnection(_connectionString);
+        }
+
+        public Microsoft.Data.SqlClient.SqlConnection Connection { get; }
     }
 }

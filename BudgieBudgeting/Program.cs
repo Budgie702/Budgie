@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using BudgieBudgeting;
+
 namespace BudgieBudgeting
 {
     public class Program
@@ -8,6 +11,13 @@ namespace BudgieBudgeting
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            // Add a database connection service
+            builder.Services.AddScoped<DatabaseConnection>(provider =>
+            {
+                var connectionString = builder.Configuration.GetConnectionString("BudgieBudgetingContext");
+                return new DatabaseConnection(connectionString);
+            });
 
             // Add session services
             builder.Services.AddSession(options =>

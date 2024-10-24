@@ -12,6 +12,13 @@ namespace BudgieBudgeting.Pages
         public string? ErrorMessage { get; set; }
         public string? Username { get; private set; } // Property to hold the username from session
 
+        private readonly DatabaseConnection _databaseConnection;
+
+        public Create_Budget_IncomeModel(DatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
+
         public IActionResult OnGet()
         {
             // Retrieve the username from the session
@@ -46,7 +53,7 @@ namespace BudgieBudgeting.Pages
             // SQL query to update the income for the user based on username
             string updateIncomeQuery = "UPDATE dbo.Customer SET Income = @Income WHERE Username = @Username";
 
-            using (SqlConnection connection = DatabaseConnection.Connection)
+            using (SqlConnection connection = _databaseConnection.Connection)
             {
                 connection.Open();
 
