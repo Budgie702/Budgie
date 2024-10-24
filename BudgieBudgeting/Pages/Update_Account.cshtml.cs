@@ -11,7 +11,7 @@ namespace BudgieBudgeting.Pages
         public required string? Username { get; set; }
         public required string? Password { get; set; } // Consider using a more secure approach for handling passwords
 
-        public void OnGet()
+        public virtual void OnGet()
         {
             // Retrieve the username from the session
             Username = HttpContext.Session.GetString("Username"); // Use session to retrieve username
