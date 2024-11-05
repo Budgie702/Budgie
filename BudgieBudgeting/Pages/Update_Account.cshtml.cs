@@ -5,6 +5,7 @@ using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using System.Diagnostics.Eventing.Reader;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace BudgieBudgeting.Pages
 {
@@ -17,31 +18,31 @@ namespace BudgieBudgeting.Pages
         {
             _databaseConnection = databaseConnection;
         }
-        // Properties to hold user account details
-        public string? Email { get; set; }
-        public string? Username { get; set; }
-        public string? Password { get; set; } // Consider using a more secure approach for handling passwords
 
         public string? ErrorMessage { get; set; }
+        UpdateCredential updateCredential { get; set; }
 
         public virtual void OnGet()
         {
             // Retrieve the username from the session
-            Username = HttpContext.Session.GetString("Username"); // Use session to retrieve username
+            String Username = HttpContext.Session.GetString("Username"); // Use session to retrieve username
 
-            // TODO: Retrieve user data from your database using the Username
-            /*
-            using (var context = new YourDbContext())
+            string query = "Select CustomerId,Email,Password form dbo.Customer where @Username = Username";
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Username == Username);
-                if (user != null)
+                using (SqlCommand command = new SqlCommand(query,connection))
                 {
-                    Email = user.Email;
-                    Username = user.Username;
-                    // Password should not be retrieved directly; handle securely
+                    command.Parameters.AddWithValue("@Username", Username);
+                    connection.Open();
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    DataTable table = new DataTable();
+                    dataAdapter.Fill(table);
+                    updateCredential.Username = Username;
+                    updateCredential.CustomerId = Convert.ToInt32(table.Rows[0][0]);
+                    updateCredential.Email = table.Rows[0][1].ToString();
+                    updateCredential.Password = table.Rows[0][2].ToString();
                 }
             }
-            */
         }
 
         public IActionResult OnPost(UpdateCredential credential)
@@ -90,6 +91,8 @@ namespace BudgieBudgeting.Pages
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        public int CustomerId {  get; set; }
     }
 }
 
