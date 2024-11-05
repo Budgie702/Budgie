@@ -35,3 +35,13 @@ steps:
     projects: '**/*.csproj'
     arguments: '--no-build --configuration $(buildConfiguration)'
     testRunTitle: 'Testing Suite'
+    
+- task: SonarCloudPrepare@3
+  inputs:
+        SonarCloud: 'SonarCloudForBusgie'
+        organization: 'budgie702'
+        scannerMode: 'dotnet'
+
+- task: SonarCloudAnalyze@3
+  inputs:
+            jdkversion: 'JAVA_HOME_17_X64'
