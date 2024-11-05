@@ -34,7 +34,8 @@ namespace BudgieBudgeting.Pages
                 {
                     command.Parameters.AddWithValue("@Username", Username);
                     connection.Open();
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                    connection.Close();
                     DataTable table = new DataTable();
                     dataAdapter.Fill(table);
                     updateCredential.Username = Username;
