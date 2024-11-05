@@ -54,12 +54,13 @@ namespace BudgieBudgeting.Pages
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
-                string query = "UPDATE dbo.Customer SET Email = @Email, Username = @Username, UserPassword = @Password WHERE Email = @Email";
+                string query = "UPDATE dbo.Customer SET Email = @Email, Username = @Username, UserPassword = @Password WHERE @Id = CustomerId";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Email", credential.Email);
                     command.Parameters.AddWithValue("@Username", credential.Username);
                     command.Parameters.AddWithValue("@Password", credential.Password);
+                    command.Parameters.AddWithValue("@Id",credential.CustomerId);
 
                     connection.Open();
                     int rowsAffected = command.ExecuteNonQuery();
