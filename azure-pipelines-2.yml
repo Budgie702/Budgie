@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - TheGreatestConnectionStringToEverExist
+      - Pre-Production
 
 pool: Default
 
