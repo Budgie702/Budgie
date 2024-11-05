@@ -3,7 +3,6 @@ trigger:
     include:
       - Pre-Production
 
-
 pool: Default
 
 variables:
@@ -18,6 +17,7 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -29,10 +29,13 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
+    
+- task: SonarCloudPrepare@3
   inputs:
-    command: 'test'
-    projects: '**/*.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration)'
-    testRunTitle: 'Testing Suite'
+        SonarCloud: 'SonarCloudForBusgie'
+        organization: 'budgie702'
+        scannerMode: 'dotnet'
+
+- task: SonarCloudAnalyze@3
+  inputs:
+            jdkversion: 'JAVA_HOME_17_X64'
