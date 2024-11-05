@@ -32,13 +32,13 @@
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" asp-for=DeleteCredential.Email type="email" placeholder="YourName@example.com">
-                                    <span asp-validation-for="DeleteCredential.Email" class="text-danger"></span>
+                                    <span id="email" asp-validation-for="DeleteCredential.Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" asp-for=DeleteCredential.Password type="password" placeholder="Password">
-                                    <span asp-validation-for=DeleteCredential.Password class="text-danger"></span>
+                                    <span id="password" asp-validation-for=DeleteCredential.Password class="text-danger"></span>
                                 </div>
-                                <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" onclick="confirmDelete()">Delete</button>
+                                <button id="Delete" type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block" onclick="confirmDelete()">Delete</button>
                             </fieldset>
                         </form>
                         @section Scripts {
