@@ -17,6 +17,7 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
