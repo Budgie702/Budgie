@@ -25,7 +25,7 @@ namespace BudgieBudgetingTests
             WebDriver.retryableSeleniumElementClick("Delete");
             WebDriver.quit();
         }
-        //Forcing a pipeline Test
+        //Forcing a pipeline Test 2
         [TestMethod]
         public void TestRegisterFailEmail()
         {
