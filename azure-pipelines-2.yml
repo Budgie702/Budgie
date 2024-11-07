@@ -30,13 +30,4 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
-- task: SonarCloudPrepare@3
-  inputs:
-        SonarCloud: 'SonarCloudForBusgie'
-        organization: 'budgie702'
-        scannerMode: 'dotnet'
-        cliProjectKey: '18d85e22c8543fe3723472408509589ced6c638a'
 
-- task: SonarCloudAnalyze@3
-  inputs:
-            jdkversion: 'JAVA_HOME_17_X64'
