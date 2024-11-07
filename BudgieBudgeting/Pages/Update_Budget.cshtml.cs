@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace BudgieBudgeting.Pages
@@ -112,7 +113,7 @@ namespace BudgieBudgeting.Pages
             }
         }
         // This method handles the form submission when the update button is clicked
-        public IActionResult OnPost(string[] Needs, string[] Wants, string[] Savings)
+        public IActionResult OnPost(List<Need> UpdatedNeeds, List<Want> UpdatedWants, List<Saving> UpdatedSavings)
         {
             // TODO: Connect to your database here to update the Needs, Wants, and Savings
             // You can use the Username variable for your queries
@@ -141,8 +142,58 @@ namespace BudgieBudgeting.Pages
                 await context.SaveChangesAsync(); // Save changes to the database
             }
             */
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                UpdateNeeds(UpdatedNeeds,connection);
+                UpdateWants(UpdatedWants,connection);
+                UpdateSavings(UpdatedSavings,connection);
+            }
+                return RedirectToPage(); // Redirect back to the same page
+        }
+        public static void UpdateNeeds(List<Need> UpdatedNeeds,SqlConnection connection)
+        {
+            String query = "Update NeedDetails set NeedName = @NeedName,NeedValue = @NeedValue where NeedDetailID = @NeedDetailID";
+            for (int i = 0; i < UpdatedNeeds.Count; i++)
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
 
-            return RedirectToPage(); // Redirect back to the same page
+                    command.Parameters.AddWithValue("@NeedName", UpdatedNeeds[i].NeedName);
+                    command.Parameters.AddWithValue("@NeedValue", UpdatedNeeds[i].NeedValue);
+                    command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
+
+                }
+            }
+        }
+        public static void UpdateWants(List<Want> UpdatedWants, SqlConnection connection)
+        {
+            String query = "Update WantDetails set WantName = @WantName,WantValue = @WantValue where WantDetailID = @WantDetailID";
+            for (int i = 0; i < UpdatedWants.Count; i++)
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@WantName", UpdatedWants[i].WantName);
+                    command.Parameters.AddWithValue("@WantValue", UpdatedWants[i].WantValue);
+                    command.Parameters.AddWithValue("@WantDetailID", UpdatedWants[i].WantDetailId);
+
+                }
+            }
+        }
+        public static void UpdateSavings(List<Saving> UpdatedSavings, SqlConnection connection)
+        {
+            String query = "Update SavingDetails set SavingName = @SavingName,SavingValue = @SavingValue where SavingDetailID = @SavingDetailID"; 
+            for (int i = 0; i < UpdatedSavings.Count; i++)
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@SavingName", UpdatedSavings[i].SavingName);
+                    command.Parameters.AddWithValue("@SavingValue", UpdatedSavings[i].SavingValue);
+                    command.Parameters.AddWithValue("@SavingDetailID", UpdatedSavings[i].SavingDetailId);
+
+                }
+            }
         }
     }
     public class Need()
