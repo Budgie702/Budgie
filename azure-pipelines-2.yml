@@ -17,6 +17,12 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: SonarQubePrepare@7
+  inputs:
+    SonarQube: 'SonarQube'
+    scannerMode: 'dotnet'
+    projectKey: 'BudgieBudgeting_Budgie.git_702cd075-d862-409c-9a6f-a866b20c672d'
+    projectName: 'Budgie'
 
 - task: VSBuild@1
   inputs:
@@ -25,9 +31,15 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: SonarQubeAnalyze@7
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
 
+- task: SonarQubePublish@7
+  inputs:
+    pollingTimeoutSec: '300'
