@@ -11,3 +11,56 @@ CREATE TABLE [dbo].[NeedDetails] (
     NeedID INT FOREIGN KEY REFERENCES [dbo].[Need](NeedID), -- Foreign Key
     NeedValue DECIMAL NULL
 );
+
+drop table [dbo].[Budget]
+-- Create the Budget table
+CREATE TABLE [dbo].[Budget] (
+    BudgetID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+    CustomerID INT FOREIGN KEY REFERENCES [dbo].[Customer](CustomerID), -- Foreign Key
+    NeedsBudget DECIMAL NULL,
+    WantsBudget DECIMAL NULL,
+    SavingsBudget DECIMAL NULL
+)
+
+drop table [dbo].[Need]
+-- Create the Need table
+CREATE TABLE [dbo].[Need] (
+	NeedID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+	BudgetID INT FOREIGN KEY REFERENCES [dbo].[Budget](BudgetID) -- Foreign Key
+);
+
+-- Create the NeedDetails table to store the array of decimals
+CREATE TABLE [dbo].[NeedDetails] (
+	NeedDetailID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+	NeedID INT FOREIGN KEY REFERENCES [dbo].[Need](NeedID), -- Foreign Key
+    NeedName VARCHAR(50) NULL,
+	NeedValue DECIMAL NULL
+);
+
+-- Create the Savings table
+CREATE TABLE [dbo].[Savings] (
+	SavingsID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+	BudgetID INT FOREIGN KEY REFERENCES [dbo].[Budget](BudgetID), -- Foreign Key
+);
+
+-- Create the SavingsDetails table to store the array of decimals
+CREATE TABLE [dbo].[SavingsDetails] (
+	SavingsDetailID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+	SavingsID INT FOREIGN KEY REFERENCES [dbo].[Savings](SavingsID), -- Foreign Key
+    SavingName VARCHAR(50) NULL,
+	SavingsValue DECIMAL NULL
+);
+
+-- Create the Wants table
+CREATE TABLE [dbo].[Wants] (
+	WantsID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+	BudgetID INT FOREIGN KEY REFERENCES [dbo].[Budget](BudgetID), -- Foreign Key
+);
+
+-- Create the WantsDetails table to store the array of decimals
+CREATE TABLE [dbo].[WantsDetails] (
+	WantsDetailID INT NOT NULL PRIMARY KEY IDENTITY(1,1), -- Primary Key
+	WantsID INT FOREIGN KEY REFERENCES [dbo].[Wants](WantsID), -- Foreign Key
+	WantName VARCHAR(50) NULL,
+	WantsValue DECIMAL NULL
+);

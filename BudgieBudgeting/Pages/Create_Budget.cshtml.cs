@@ -6,6 +6,7 @@ using BudgieBudgeting.DatabaseItems;
 using Microsoft.Data.SqlClient;
 using BudgieBudgeting.Pages.Shared;
 using Castle.Core.Resource;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BudgieBudgeting.Pages
 {
@@ -20,7 +21,7 @@ namespace BudgieBudgeting.Pages
         [BindProperty]
         public List<string> Savings { get; set; } = new List<string>();
 
-        public string? Username { get; private set; } 
+        public string? Username { get; private set; }
         public int BudgetID { get; private set; }
         public object CustomerID { get; private set; }
         public object Income { get; private set; }
@@ -41,7 +42,7 @@ namespace BudgieBudgeting.Pages
             _databaseConnection = databaseConnection;
         }
 
-            public void OnGet()
+        public void OnGet()
         {
             // Retrieve the username from the session
             Username = HttpContext.Session.GetString("Username");
@@ -49,248 +50,40 @@ namespace BudgieBudgeting.Pages
             // Optional: Check if username is null or empty
             if (string.IsNullOrEmpty(Username))
             {
-                // Handle the case where the username is not found in the session
-                // Redirect to login or display an error message
                 RedirectToPage("/Login");
             }
         }
 
         public IActionResult OnPost()
         {
-            // Process the form submission 
-
-            //Saving Info for Budget Table 
-                //check database for highest Budget ID and +1 
-                //find CustomerID linked to Username 
-                //take Income from Customers table linked to Username 
-                //Divide income by 50%, 30% and 20% and save to NeedsBudget, WantsBudget, SavingsBudget 
-
-                BudgetID = getBudgetID() + 1;
-                CustomerID = HttpContext.Session.GetString("CustomerId");
-                Income = getCustomerIncome();
-                NeedsBudget = (int)Income * .5;
-                WantsBudget = (int)Income * .3;
-                SavingsBudget = (int)Income * .2;
-
-                string insertQuery = "INSERT INTO dbo.Budget (BudgetId, CustomerId, NeedsBudget, WantsBudget, SavingsBudget) VALUES (BudgetID, CustomerID, NeedsBudget, WantsBudget, SavingsBudget )";
-
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-            {
-                connection.Open();
-
-                    using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
-                    {
-                        insertCommand.Parameters.AddWithValue("BudgetID", BudgetID);
-                        insertCommand.Parameters.AddWithValue("CustomerID", CustomerID);
-                        insertCommand.Parameters.AddWithValue("NeedsBudget", NeedsBudget);
-                        insertCommand.Parameters.AddWithValue("WantsBudget", WantsBudget);
-                        insertCommand.Parameters.AddWithValue("SavingsBudget", SavingsBudget);
-                        insertCommand.ExecuteNonQuery();
-                    }
-                }
-
-
-            //Saving Info for Need Table 
-                //take current Budget ID and save 
-                //check database for highest NeedID and +1 
-
-                NeedID = getNeedsID() + 1;
-
-                string insertNeedTable = "INSERT INTO dbo.Need (BudgetId, NeedId) VALUES (BudgetID, NeedID )";
-
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-            {
-                connection.Open();
-
-                    using (SqlCommand insertCommand = new SqlCommand(insertNeedTable, connection))
-                    {
-                        insertCommand.Parameters.AddWithValue("BudgetID", BudgetID);
-                        insertCommand.Parameters.AddWithValue("NeedID", NeedID);
-                        insertCommand.ExecuteNonQuery();
-                    }
-                }
-
-
-            //Saving Info for Want Table 
-            //take current Budget ID and save 
-            //check database for highest WantID and +1 
-
-            WantID = getWantsID() + 1;
-
-
-            //Saving Info for Savings Table 
-                //take current Budget ID and save 
-                //check database for highest SavingsID and +1 
-
-            SavingID = getSavingsID() + 1;
-
-
-            // Save the Needs to the NeedsDetails table 
-                // Loop through Needs[] to take each item 
-
-                foreach(var need in Needs)
-                {
-                    // Find the highest NeedDetailsID and +1 
-                    // Take current NeedID and save 
-                    // Take name value and save 
-                    // need value remains blank for current time 
-
-                    NeedDetailsID = getNeedDetailsID() + 1;
-
-                    string insertNeedDetails = "INSERT INTO dbo.NeedDetails (NeedDetailsID, NeedID, NeedName, NeedValue) VALUES (NeedDetailsID, NeedID, need, 0)";
-
-                using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-                {
-                    connection.Open();
-
-                        using (SqlCommand insertCommand = new SqlCommand(insertNeedDetails, connection))
-                        {
-                            insertCommand.Parameters.AddWithValue("NeedDetailsID", NeedDetailsID);
-                            insertCommand.Parameters.AddWithValue("NeedID", NeedID);
-                            insertCommand.Parameters.AddWithValue("need", need);
-                            insertCommand.Parameters.AddWithValue("0", 0);
-                            insertCommand.ExecuteNonQuery();
-                        }
-                    }
-
-            }
-
-
-            // Redirect to a success page or another page 
-
+            InsertBudget();
+            InsertNeed();
+            InsertNeedDetails();
             return RedirectToPage("/Success");
         }
 
-        public int getBudgetID()
+        public decimal getCustomerIncome()
         {
-            // SQL query to get the max BudgetID 
-            string getMaxBudgetIDQuery = "SELECT MAX(BudgetID) FROM dbo.Budget";
-
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-            {
-                connection.Open();
-                using (SqlCommand getCommand = new SqlCommand(getMaxBudgetIDQuery, connection))
-                {
-                    // Add parameters for income and username 
-                    getCommand.Parameters.AddWithValue("@BudgetID", BudgetID);
-                    int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
-                    {
-                        ErrorMessage = "Error: No BudgetID was found.";
-                        return -1;
-                    }
-
-                    else
-                    {
-                        return @BudgetID;
-                    }
-                }
-            }
-        }
-
-        public int getNeedsID()
-        {
-            // SQL query to get the max NeedID 
-            string getMaxNeedIDQuery = "SELECT MAX(NeedID) FROM dbo.Need";
-
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-            {
-                connection.Open();
-                using (SqlCommand getCommand = new SqlCommand(getMaxNeedIDQuery, connection))
-                {
-                    // Add parameters for income and username 
-                    getCommand.Parameters.AddWithValue("@NeedID", NeedID);
-                    int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
-                    {
-                        ErrorMessage = "Error: No NeedID was found.";
-                        return -1;
-                    }
-
-                    else
-                    {
-                        return @NeedID;
-                    }
-                }
-            }
-        }
-
-        public int getWantsID()
-        {
-            // SQL query to get the max NeedID 
-            string getMaxWantIDQuery = "SELECT MAX(WantID) FROM dbo.Want";
-
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-            {
-                connection.Open();
-                using (SqlCommand getCommand = new SqlCommand(getMaxWantIDQuery, connection))
-                {
-                    // Add parameters for income and username 
-                    getCommand.Parameters.AddWithValue("@WantID", WantID);
-                    int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
-                    {
-                        ErrorMessage = "Error: No WantID was found.";
-                        return -1;
-                    }
-
-                    else
-                    {
-                        return @WantID;
-                    }
-                }
-            }
-        }
-
-        public int getSavingsID()
-        {
-            // SQL query to get the max NeedID 
-            string getMaxSavingIDQuery = "SELECT MAX(SavingID) FROM dbo.Saving";
-
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
-            {
-                connection.Open();
-                using (SqlCommand getCommand = new SqlCommand(getMaxSavingIDQuery, connection))
-                {
-                    // Add parameters for income and username 
-                    getCommand.Parameters.AddWithValue("@SavingID", SavingID);
-                    int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
-                    {
-                        ErrorMessage = "Error: No SavingID was found.";
-                        return -1;
-                    }
-
-                    else
-                    {
-                        return @SavingID;
-                    }
-                }
-            }
-        }
-
-        public int getCustomerIncome()
-        {
-            // SQL query to get the max NeedID 
+            Username = HttpContext.Session.GetString("Username");
             string getCustomerIncomeQuery = "SELECT Income FROM dbo.Customer Where Username like '" + Username + "'";
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
-  
                 connection.Open();
                 using (SqlCommand getCommand = new SqlCommand(getCustomerIncomeQuery, connection))
                 {
-                    
-                    int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
+                    using (SqlDataReader reader = getCommand.ExecuteReader())
                     {
-                        ErrorMessage = "Error: No SavingID was found.";
-                        return -1;
-                    }
+                        if (reader.Read())
+                        {
+                            return reader.GetDecimal(0);
 
-                    else
-                    {
-                        return (int)@Income;
+                        }
+                        else
+                        {
+                            ErrorMessage = "Error: No income found for the customer.";
+                            return -1;
+                        }
                     }
                 }
             }
@@ -298,57 +91,120 @@ namespace BudgieBudgeting.Pages
 
         public int getCustomerID()
         {
+            string Username = HttpContext.Session.GetString("Username");
             // SQL query to get the CustomerID 
-            string getCustomerIncomeQuery = "SELECT CustomerId FROM dbo.Customer where USERNAME = Username";
+            string GetCustomerID = "SELECT CustomerId FROM dbo.Customer Where Username like '" + Username + "'";
 
             using (SqlConnection connection = _databaseConnection.Connection)
             {
                 connection.Open();
-                using (SqlCommand getCommand = new SqlCommand(getCustomerIncomeQuery, connection))
+                using (SqlCommand getCommand = new SqlCommand(GetCustomerID, connection))
                 {
-                    // Add parameters for income and username 
-                    getCommand.Parameters.AddWithValue("@CustomerID", CustomerID);
                     int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
+                    using (SqlDataReader reader = getCommand.ExecuteReader())
                     {
-                        ErrorMessage = "Error: No CustomerID was found.";
-                        return -1;
-                    }
-
-                    else
-                    {
-                        return (int)@CustomerID;
+                        if (reader.Read())
+                        {
+                            return reader.GetInt32(0);
+                        }
+                        else
+                        {
+                            ErrorMessage = "Error: No CustomerID was found.";
+                            return -1;
+                        }
                     }
                 }
             }
         }
-            public int getNeedDetailsID()
+
+        //public int getNeedDetailsID()
+        //{
+        //    // SQL query to get the max NeedDetailID
+        //    string getMaxNeedDetailsIDQuery = "SELECT MAX(NeedDetailID) FROM dbo.NeedDetails";
+
+        //    using (SqlConnection connection = _databaseConnection.Connection)
+        //    {
+        //        connection.Open();
+        //        using (SqlCommand getCommand = new SqlCommand(getMaxNeedDetailsIDQuery, connection))
+        //        {
+        //            // Add parameters for income and username 
+        //            getCommand.Parameters.AddWithValue("@NeedDetailID", NeedDetailID);
+        //            int rowsAffected = getCommand.ExecuteNonQuery();
+        //            if (rowsAffected == 0)
+        //            {
+        //                ErrorMessage = "Error: No NeedDetailID was found.";
+        //                return -1;
+        //            }
+
+        //            else
+        //            {
+        //                return @NeedDetailID;
+        //            }
+        //        }
+        //    }
+        //}
+
+        public void InsertBudget()
         {
-            // SQL query to get the max NeedDetailID
-            string getMaxNeedDetailsIDQuery = "SELECT MAX(NeedDetailID) FROM dbo.NeedDetails";
+            decimal income = getCustomerIncome();
+            decimal needsBudget = income * 0.5m;
+            decimal wantsBudget = income * 0.3m;
+            decimal savingsBudget = income * 0.2m;
 
-            using (SqlConnection connection = _databaseConnection.Connection)
+            string insertQuery = "INSERT INTO dbo.Budget (CustomerId, NeedsBudget, WantsBudget, SavingsBudget) VALUES (@CustomerID, @NeedsBudget, @WantsBudget, @SavingsBudget)";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
                 connection.Open();
-                using (SqlCommand getCommand = new SqlCommand(getMaxNeedDetailsIDQuery, connection))
-                {
-                    // Add parameters for income and username 
-                    getCommand.Parameters.AddWithValue("@NeedDetailID", NeedDetailID);
-                    int rowsAffected = getCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
-                    {
-                        ErrorMessage = "Error: No NeedDetailID was found.";
-                        return -1;
-                    }
 
-                    else
-                    {
-                        return @NeedDetailID;
-                    }
+                using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@CustomerID", getCustomerID());
+                    insertCommand.Parameters.AddWithValue("@NeedsBudget", needsBudget);
+                    insertCommand.Parameters.AddWithValue("@WantsBudget", wantsBudget);
+                    insertCommand.Parameters.AddWithValue("@SavingsBudget", savingsBudget);
+                    insertCommand.ExecuteNonQuery();
                 }
+                connection.Close();
             }
         }
 
+        public void InsertNeed()
+        {
+            string insertNeedTable = "INSERT INTO dbo.Need (BudgetId, NeedId) VALUES (@BudgetID, @NeedID)";
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
 
+                using (SqlCommand insertCommand = new SqlCommand(insertNeedTable, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@BudgetID", BudgetID);
+                    insertCommand.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+
+        public void InsertNeedDetails()
+        {
+            foreach (var need in Needs)
+            {
+                string insertNeedDetails = "INSERT INTO dbo.NeedDetails (NeedDetailsID, NeedID, NeedName, NeedValue) VALUES (@NeedDetailsID, @NeedID, @NeedName, 0)";
+
+                using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand insertCommand = new SqlCommand(insertNeedDetails, connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@NeedName", need);
+                        insertCommand.ExecuteNonQuery();
+                    }
+                    connection.Close();
+
+                }
+
+            }
+        }
     }
 }
