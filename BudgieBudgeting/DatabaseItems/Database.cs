@@ -21,31 +21,31 @@ namespace BudgieBudgeting.DatabaseItems
             connection.Open();
 
             SqlCommand cmd = new SqlCommand("SELECT * FROM Customer", connection);
-            SqlDataAdapter data = new SqlDataAdapter();
+            SqlDataAdapter data = new SqlDataAdapter(cmd);
             DataTable table = new DataTable();
             data.Fill(table);
             dataSet.Tables.Add(table);
 
             cmd = new SqlCommand("SELECT * FROM Budget", connection);
-            data = new SqlDataAdapter();
+            data = new SqlDataAdapter(cmd);
             table = new DataTable();
             data.Fill(table);
             dataSet.Tables.Add(table);
 
             cmd = new SqlCommand("SELECT * FROM Need", connection);
-            data = new SqlDataAdapter();
+            data = new SqlDataAdapter(cmd);
             table = new DataTable();
             data.Fill(table);
             dataSet.Tables.Add(table);
 
             cmd = new SqlCommand("SELECT * FROM Saving", connection);
-            data = new SqlDataAdapter();
+            data = new SqlDataAdapter(cmd);
             table = new DataTable();
             data.Fill(table);
             dataSet.Tables.Add(table);
 
             cmd = new SqlCommand("SELECT * FROM Want", connection);
-            data = new SqlDataAdapter();
+            data = new SqlDataAdapter(cmd);
             table = new DataTable();
             data.Fill(table);
             dataSet.Tables.Add(table);

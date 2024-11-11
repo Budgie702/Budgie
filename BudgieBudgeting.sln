@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgieBudgeting", "BudgieBudgeting\BudgieBudgeting.csproj", "{EA04449F-F979-45DB-A9E4-FDB786740036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgieBudgetingTests", "BudgieBudgetingTests\BudgieBudgetingTests.csproj", "{B44B45F8-6077-4D38-A6D9-F9E5A47E31D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgieBudgetingTests", "BudgieBudgetingTests\BudgieBudgetingTests.csproj", "{B44B45F8-6077-4D38-A6D9-F9E5A47E31D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A30904BD-CB16-4094-820F-D69C71362DC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,12 +12,19 @@ namespace BudgieBudgeting.Pages
 
         public required string ErrorMessage { get; set; }
 
+        private readonly DatabaseConnection _databaseConnection;
+
+        public Delete_AccountModel(DatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
+
         public virtual void OnPost()
         {
             string DeleteQuery = "DELETE FROM dbo.Customer WHERE email = @Email AND UserPassword = @UserPassword";
             int rowsDeleted = 0;
 
-            using (SqlConnection connection = DatabaseConnection.Connection)
+            using (SqlConnection connection = _databaseConnection.Connection)
             {
                 connection.Open();
 
@@ -33,8 +40,8 @@ namespace BudgieBudgeting.Pages
             if (rowsDeleted > 0)
             {
                 try
-                { 
-                    Response.Redirect("/Homepage"); 
+                {
+                    Response.Redirect("/Homepage");
                 }
                 catch
                 {
@@ -47,8 +54,6 @@ namespace BudgieBudgeting.Pages
                 ErrorMessage = "Account Not Found";
                 return;
             }
-
-
         }
     }
 

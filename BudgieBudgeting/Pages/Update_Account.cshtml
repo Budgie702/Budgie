@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Update Account Details";
 }
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,30 +24,39 @@
                     </div>
                     <div class="panel-body">
                         <form method="post">
+                            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                            {
+                                <div class="alert alert-danger">@Model.ErrorMessage</div>
+                            }
                             <fieldset>
+                                <!-- Hidden field to retain CustomerId on form submission -->
+                                <input type="hidden" asp-for="updateCredential.CustomerId" />
+
                                 <div class="form-group">
-                                    <input class="form-control" type="email" placeholder="YourName@example.com" asp-for="Email" />
-                                    <span class="text-danger"></span>
+                                    <input id="email" class="form-control" type="email" placeholder="YourName@example.com" asp-for="updateCredential.Email" />
+                                    <span class="text-danger" asp-validation-for="updateCredential.Email"></span>
                                 </div>
+
                                 <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Username" asp-for="Username" value="@Model.Username" readonly />
-                                    <span class="text-danger"></span>
+                                    <input id="user" class="form-control" type="text" placeholder="Username" asp-for="updateCredential.Username" />
+                                    <span class="text-danger" asp-validation-for="updateCredential.Username"></span>
                                 </div>
+
                                 <div class="form-group">
-                                    <input class="form-control" type="password" placeholder="Password" asp-for="Password" />
-                                    <span class="text-danger"></span>
-                                </div>
-                                <div class="checkbox">
-                                    <!-- Add any additional checkboxes here if needed -->
+                                    <input id="password" class="form-control" type="password" placeholder="Password" asp-for="updateCredential.Password" />
+                                    <span class="text-danger" asp-validation-for="updateCredential.Password"></span>
                                 </div>
                             </fieldset>
-                            <button type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Update</button>
+
+                            <button id="update" type="submit" style="background-color: #44b3b1" class="btn btn-lg btn-success btn-block">Update</button>
                         </form>
+
                         <hr />
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>

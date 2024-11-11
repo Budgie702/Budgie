@@ -1,54 +1,126 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http; // Required for accessing session
+using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgieBudgeting.Pages
 {
     public class Update_AccountModel : PageModel
     {
-        // Properties to hold user account details
-        public required string? Email { get; set; }
-        public required string? Username { get; set; }
-        public required string? Password { get; set; } // Consider using a more secure approach for handling passwords
+        private readonly DatabaseConnection _databaseConnection;
+
+        public Update_AccountModel(DatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
+
+        public string? ErrorMessage { get; set; }
+
+        // Make updateCredential public so it's accessible in the Razor Page
+        [BindProperty]
+        public UpdateCredential updateCredential { get; set; } = new UpdateCredential();
 
         public virtual void OnGet()
         {
             // Retrieve the username from the session
-            Username = HttpContext.Session.GetString("Username"); // Use session to retrieve username
+            string Username = HttpContext.Session.GetString("Username");
 
-            // TODO: Retrieve user data from your database using the Username
-            /*
-            using (var context = new YourDbContext())
+            if (string.IsNullOrEmpty(Username))
             {
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Username == Username);
-                if (user != null)
+                ErrorMessage = "No user logged in.";
+                return;
+            }
+
+            string query = "SELECT CustomerId, Email, UserPassword FROM dbo.Customer WHERE Username = @Username";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    Email = user.Email;
-                    Username = user.Username;
-                    // Password should not be retrieved directly; handle securely
+                    command.Parameters.AddWithValue("@Username", Username);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            updateCredential.Username = Username;
+                            updateCredential.CustomerId = reader.GetInt32(0);
+                            updateCredential.Email = reader.GetString(1);
+                            updateCredential.Password = reader.GetString(2);
+                            Console.WriteLine($"Email: {updateCredential.Email}");
+                            Console.WriteLine($"Username: {updateCredential.Username}");
+                            Console.WriteLine($"Password: {updateCredential.Password}");
+                            Console.WriteLine($"CustomerId: {updateCredential.CustomerId}");
+                        }
+                        else
+                        {
+                            ErrorMessage = "User data not found.";
+                        }
+                    }
                 }
             }
-            */
         }
 
-        public IActionResult OnPost(string email, string username, string password)
+        public IActionResult OnPost()
         {
-            // TODO: Handle form submission to update the user account
-            // Validate and save the updated information to your database
-            /*
-            using (var context = new YourDbContext())
+            if (!ModelState.IsValid)
             {
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Username == username);
-                if (user != null)
+                return Page();
+            }
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                string query = "UPDATE dbo.Customer SET Email = @Email, Username = @Username, UserPassword = @Password WHERE CustomerId = @Id";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    user.Email = email;
-                    // Consider updating password securely, e.g., hashing it
-                    await context.SaveChangesAsync();
+                    command.Parameters.AddWithValue("@Email", updateCredential.Email);
+                    command.Parameters.AddWithValue("@Username", updateCredential.Username);
+                    command.Parameters.AddWithValue("@Password", updateCredential.Password);
+                    command.Parameters.AddWithValue("@Id", updateCredential.CustomerId);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+
+                        HttpContext.Session.Clear();
+
+
+                        return Content(@"<script>
+                                    alert('Update successful! You will now be redirected to the login page.');
+                                    window.location.href = '/Login';
+                                 </script>", "text/html");
+                    }
+                    else
+                    {
+                        ErrorMessage = "Update failed. Please try again.";
+                    }
                 }
             }
-            */
 
-            return RedirectToPage(); // Redirect after successful update
+            return Page();
         }
+
+    }
+
+    public class UpdateCredential
+    {
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required]
+        public int CustomerId { get; set; }
     }
 }

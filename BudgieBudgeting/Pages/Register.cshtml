@@ -28,15 +28,15 @@
                             }
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" type="email" asp-for="RegisterCredential.Email" placeholder="YourName@example.com">
+                                    <input class="form-control" id="email" type="email" asp-for="RegisterCredential.Email" placeholder="YourName@example.com">
                                     <span asp-validation-for="RegisterCredential.Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="text" asp-for="RegisterCredential.Username" placeholder="Username">
+                                    <input class="form-control" id="user" type="text" asp-for="RegisterCredential.Username" placeholder="Username">
                                     <span asp-validation-for="RegisterCredential.Username" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="password" asp-for="RegisterCredential.Password" placeholder="Password">
+                                    <input class="form-control" id="password" type="password" asp-for="RegisterCredential.Password" placeholder="Password">
                                     <span asp-validation-for="RegisterCredential.Password" class="text-danger"></span>
                                 </div>
                                 <div class="checkbox">
@@ -44,7 +44,7 @@
                                         <input name="remember" type="checkbox" value="Remember Me"> Remember Me
                                     </label>
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" type="submit" style="background-color: #44b3b1" value="Register">
+                                <input id="register" class="btn btn-lg btn-success btn-block" type="submit" style="background-color: #44b3b1" value="Register">
                                 <div style="text-align:center; padding:4px;">Or</div>
                             </fieldset>
                         </form>
