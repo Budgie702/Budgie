@@ -1,7 +1,4 @@
-trigger:
-  branches:
-    include:
-      - Pre-Production
+
 
 pool: Default
 
