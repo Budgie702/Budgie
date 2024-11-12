@@ -95,7 +95,7 @@ namespace BudgieBudgeting.Pages
             // SQL query to get the CustomerID 
             string GetCustomerID = "SELECT CustomerId FROM dbo.Customer Where Username like '" + Username + "'";
 
-            using (SqlConnection connection = _databaseConnection.Connection)
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand getCommand = new SqlCommand(GetCustomerID, connection))
@@ -171,14 +171,14 @@ namespace BudgieBudgeting.Pages
 
         public void InsertNeed()
         {
-            string insertNeedTable = "INSERT INTO dbo.Need (BudgetId, NeedId) VALUES (@BudgetID, @NeedID)";
+            string insertNeedTable = "INSERT INTO dbo.Need (BudgetID) VALUES (@BudgetID)";
             using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
                 connection.Open();
-
+                
                 using (SqlCommand insertCommand = new SqlCommand(insertNeedTable, connection))
                 {
-                    insertCommand.Parameters.AddWithValue("@BudgetID", BudgetID);
+                    insertCommand.Parameters.AddWithValue("@BudgetID", GetBudgetId());
                     insertCommand.ExecuteNonQuery();
                 }
                 connection.Close();
@@ -187,24 +187,68 @@ namespace BudgieBudgeting.Pages
 
         public void InsertNeedDetails()
         {
-            foreach (var need in Needs)
+            if (Needs != null && Needs.Count-1 > 0)
             {
-                string insertNeedDetails = "INSERT INTO dbo.NeedDetails (NeedDetailsID, NeedID, NeedName, NeedValue) VALUES (@NeedDetailsID, @NeedID, @NeedName, 0)";
-
-                using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+                foreach (var need in Needs)
                 {
-                    connection.Open();
+                    string insertNeedDetails = "INSERT INTO dbo.NeedDetails (NeedID, NeedName, NeedValue) VALUES (@NeedID, @NeedName, 0)";
 
-                    using (SqlCommand insertCommand = new SqlCommand(insertNeedDetails, connection))
+                    using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
                     {
-                        insertCommand.Parameters.AddWithValue("@NeedName", need);
-                        insertCommand.ExecuteNonQuery();
-                    }
-                    connection.Close();
+                        connection.Open();
 
+                        using (SqlCommand insertCommand = new SqlCommand(insertNeedDetails, connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@NeedID", GetNeedId());
+                            insertCommand.Parameters.AddWithValue("@NeedName", need);
+                            insertCommand.ExecuteNonQuery();
+                        }
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
+        public int GetNeedId()
+        {
+            string getNeedIdQuery = "SELECT MAX(NeedID) FROM dbo.Need";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand getCommand = new SqlCommand(getNeedIdQuery, connection))
+                {
+                    int needId = (int)getCommand.ExecuteScalar();
+                    return needId;
+                }
+            }
+        }
+        public int GetBudgetId()
+        {
+            string GetBudgetId = "SELECT BudgetID FROM [dbo].[Budget] WHERE CustomerId like '" + getCustomerID() + "'";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand SelectCustomerID = new SqlCommand(GetBudgetId, connection))
+                {
+                    using (SqlDataReader reader = SelectCustomerID.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            int BID = reader.GetInt32(0);
+                            return BID;
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
                 }
 
-            }
+            } 
         }
     }
 }
