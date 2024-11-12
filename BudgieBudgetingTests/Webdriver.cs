@@ -48,7 +48,7 @@ namespace BudgieBudgetingTests
                 }
             }
         }
-       public void retryableSeleniumElementSend(string id, string text)
+        public void retryableSeleniumElementSend(string id, string text)
         {
             int retries = 0;
             while (retries < 3)
@@ -84,7 +84,7 @@ namespace BudgieBudgetingTests
             }
         }
 
-        public void retryableSeleniumFailElement_Check (string id)
+        public void retryableSeleniumFailElement_Check(string id)
         {
             int retries = 0;
             while (retries < 3)
@@ -102,5 +102,23 @@ namespace BudgieBudgetingTests
             }
         }
 
+        public void retryableMessageOKClick()
+        {
+            int retries = 0;
+            while (retries < 3)
+            {
+                try
+                {
+                    IWebElement okButton = driver.FindElement(By.Id("okButton"));
+                    okButton.Click();
+                    break;
+                }
+                catch (Exception e)
+                {
+                    Thread.Sleep(1000);
+                    retries++;
+                }
+            }
+        }
     }
 }
