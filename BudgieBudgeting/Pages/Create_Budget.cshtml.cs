@@ -34,6 +34,9 @@ namespace BudgieBudgeting.Pages
         public string ErrorMessage { get; private set; }
         public int NeedDetailsID { get; private set; }
         public int NeedDetailID { get; private set; }
+        decimal needsMultiplier = 0.5m;
+        decimal wantsMultiplier = 0.3m;
+        decimal savingsMultiplier = 0.2m;
 
         private readonly DatabaseConnection _databaseConnection;
 
@@ -151,9 +154,9 @@ namespace BudgieBudgeting.Pages
         public void InsertBudget()
         {
             decimal income = getCustomerIncome();
-            decimal needsBudget = income * 0.5m;
-            decimal wantsBudget = income * 0.3m;
-            decimal savingsBudget = income * 0.2m;
+            decimal needsBudget = income * needsMultiplier;
+            decimal wantsBudget = income * wantsMultiplier;
+            decimal savingsBudget = income * savingsMultiplier;
 
             string insertQuery = "INSERT INTO dbo.Budget (CustomerId, NeedsBudget, WantsBudget, SavingsBudget) VALUES (@CustomerID, @NeedsBudget, @WantsBudget, @SavingsBudget)";
 
