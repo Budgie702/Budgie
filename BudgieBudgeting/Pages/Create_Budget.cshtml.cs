@@ -47,14 +47,13 @@ namespace BudgieBudgeting.Pages
 
         public void OnGet()
         {
-            // Retrieve the username from the session
-            Username = HttpContext.Session.GetString("Username");
-
-            // Optional: Check if username is null or empty
             if (string.IsNullOrEmpty(Username))
             {
                 RedirectToPage("/Login");
             }
+            Username = HttpContext.Session.GetString("Username");
+
+            
         }
 
         public IActionResult OnPost()
@@ -124,32 +123,6 @@ namespace BudgieBudgeting.Pages
             }
         }
 
-        //public int getNeedDetailsID()
-        //{
-        //    // SQL query to get the max NeedDetailID
-        //    string getMaxNeedDetailsIDQuery = "SELECT MAX(NeedDetailID) FROM dbo.NeedDetails";
-
-        //    using (SqlConnection connection = _databaseConnection.Connection)
-        //    {
-        //        connection.Open();
-        //        using (SqlCommand getCommand = new SqlCommand(getMaxNeedDetailsIDQuery, connection))
-        //        {
-        //            // Add parameters for income and username 
-        //            getCommand.Parameters.AddWithValue("@NeedDetailID", NeedDetailID);
-        //            int rowsAffected = getCommand.ExecuteNonQuery();
-        //            if (rowsAffected == 0)
-        //            {
-        //                ErrorMessage = "Error: No NeedDetailID was found.";
-        //                return -1;
-        //            }
-
-        //            else
-        //            {
-        //                return @NeedDetailID;
-        //            }
-        //        }
-        //    }
-        //}
 
         public void InsertBudget()
         {

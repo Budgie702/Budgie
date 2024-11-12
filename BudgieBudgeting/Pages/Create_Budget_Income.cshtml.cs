@@ -75,7 +75,7 @@ namespace BudgieBudgeting.Pages
             }
 
             // After updating the income, redirect to a success page or any other desired page
-            return RedirectToPage("/Create_Budget");
+            return RedirectToPage("/Update_Spending");
         }
     }
 }
