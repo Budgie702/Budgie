@@ -59,7 +59,11 @@ namespace BudgieBudgeting.Pages
             InsertBudget();
             InsertNeed();
             InsertNeedDetails();
-            return RedirectToPage("/Success");
+            InsertWant();
+            InsertWantDetails();
+            InsertSavings();
+            InsertSavingsDetails(); 
+            return RedirectToPage("/Homepage");
         }
 
         public decimal getCustomerIncome()
@@ -209,9 +213,116 @@ namespace BudgieBudgeting.Pages
             }
         }
 
+        public void InsertWant()
+        {
+            string insertNeedTable = "INSERT INTO dbo.Wants(BudgetID) VALUES (@BudgetID)";
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand insertCommand = new SqlCommand(insertNeedTable, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@BudgetID", GetBudgetId());
+                    insertCommand.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+        public void InsertWantDetails()
+        {
+            if (Needs != null && Needs.Count - 1 > 0)
+            {
+                foreach (var need in Needs)
+                {
+                    string insertNeedDetails = "INSERT INTO dbo.WantsDetails (WantsID, WantName, WantsValue) VALUES (@NeedID, @NeedName, 0)";
+
+                    using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand insertCommand = new SqlCommand(insertNeedDetails, connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@NeedID", GetWantsId());
+                            insertCommand.Parameters.AddWithValue("@NeedName", need);
+                            insertCommand.ExecuteNonQuery();
+                        }
+                        connection.Close();
+                    }
+                }
+            }
+        }
+        public void InsertSavings()
+        {
+            string insertNeedTable = "INSERT INTO dbo.Savings (BudgetID) VALUES (@BudgetID)";
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand insertCommand = new SqlCommand(insertNeedTable, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@BudgetID", GetBudgetId());
+                    insertCommand.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+        public void InsertSavingsDetails()
+        {
+            if (Needs != null && Needs.Count - 1 > 0)
+            {
+                foreach (var need in Needs)
+                {
+                    string insertNeedDetails = "INSERT INTO dbo.SavingsDetails (SavingsID, SavingName, SavingsValue) VALUES (@NeedID, @NeedName, 0)";
+
+                    using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand insertCommand = new SqlCommand(insertNeedDetails, connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@NeedID", GetSavingsId());
+                            insertCommand.Parameters.AddWithValue("@NeedName", need);
+                            insertCommand.ExecuteNonQuery();
+                        }
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
         public int GetNeedId()
         {
             string getNeedIdQuery = "SELECT MAX(NeedID) FROM dbo.Need";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand getCommand = new SqlCommand(getNeedIdQuery, connection))
+                {
+                    int needId = (int)getCommand.ExecuteScalar();
+                    return needId;
+                }
+            }
+        }
+        public int GetWantsId()
+        {
+            string getNeedIdQuery = "SELECT MAX(WantsID) FROM dbo.Wants";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand getCommand = new SqlCommand(getNeedIdQuery, connection))
+                {
+                    int needId = (int)getCommand.ExecuteScalar();
+                    return needId;
+                }
+            }
+        }
+        public int GetSavingsId()
+        {
+            string getNeedIdQuery = "SELECT MAX(SavingsID) FROM dbo.Savings";
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
