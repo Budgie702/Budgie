@@ -59,10 +59,11 @@
                             <div class="budget-columns">
                                 <div class="budget-column" id="needsColumn">
                                     <h4 style="text-align:center;">Needs</h4>
-                                    @foreach (var need in Model.Needs)
+                                    @for (int i = 0; i < Model.Needs.Count; i++)
                                     {
                                         <div class="entry-container">
-                                            <textarea class="form-control" name="Needs[]">@need</textarea>
+                                            <textarea class="form-control" name="Wants" asp-for="Needs[i].NeedName" value="@Model.Needs[i].NeedName"></textarea>
+                                            <textarea class="form-control" name="Wants" asp-for="Needs[i].NeedValue" value="@Model.Needs[i].NeedValue"></textarea>
                                             <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -75,10 +76,11 @@
                                 </div>
                                 <div class="budget-column" id="wantsColumn">
                                     <h4 style="text-align:center;">Wants</h4>
-                                    @foreach (var want in Model.Wants)
+                                    @for (int i = 0; i < Model.Wants.Count; i++)
                                     {
                                         <div class="entry-container">
-                                            <textarea class="form-control" name="Wants[]">@want</textarea>
+                                            <textarea class="form-control" name="Wants" asp-for="Wants[i].WantName" value="@Model.Wants[i].WantName"></textarea>
+                                            <textarea class="form-control" name="Wants" asp-for="Wants[i].WantValue" value="@Model.Wants[i].WantValue"></textarea>
                                             <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -91,10 +93,11 @@
                                 </div>
                                 <div class="budget-column" id="savingsColumn">
                                     <h4 style="text-align:center;">Savings</h4>
-                                    @foreach (var saving in Model.Savings)
+                                    @for (int i = 0; i < Model.Savings.Count; i++)
                                     {
                                         <div class="entry-container">
-                                            <textarea class="form-control" name="Savings[]">@saving</textarea>
+                                            <textarea class="form-control" name="Wants" asp-for="Savings[i].SavingName" value="@Model.Savings[i].SavingName"></textarea>
+                                            <textarea class="form-control" name="Wants" asp-for="Savings[i].SavingValue" value="@Model.Savings[i].SavingValue"></textarea>
                                             <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
