@@ -181,13 +181,19 @@ namespace BudgieBudgeting.Pages
             String query = "Update NeedDetails set NeedName = @NeedName,NeedValue = @NeedValue where NeedDetailID = @NeedDetailID";
             for (int i = 0; i < UpdatedNeeds.Count; i++)
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                if (UpdatedNeeds[i].DelNeed)
                 {
 
-                    command.Parameters.AddWithValue("@NeedName", UpdatedNeeds[i].NeedName);
-                    command.Parameters.AddWithValue("@NeedValue", UpdatedNeeds[i].NeedValue);
-                    command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
-                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedName", UpdatedNeeds[i].NeedName);
+                        command.Parameters.AddWithValue("@NeedValue", UpdatedNeeds[i].NeedValue);
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -196,13 +202,20 @@ namespace BudgieBudgeting.Pages
             String query = "Update WantsDetails set WantName = @WantName,WantsValue = @WantValue where WantsDetailID = @WantDetailID";
             for (int i = 0; i < UpdatedWants.Count; i++)
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                if (UpdatedWants[i].DelWant)
                 {
 
-                    command.Parameters.AddWithValue("@WantName", UpdatedWants[i].WantName);
-                    command.Parameters.AddWithValue("@WantValue", UpdatedWants[i].WantValue);
-                    command.Parameters.AddWithValue("@WantDetailID", UpdatedWants[i].WantDetailId);
-                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@WantName", UpdatedWants[i].WantName);
+                        command.Parameters.AddWithValue("@WantValue", UpdatedWants[i].WantValue);
+                        command.Parameters.AddWithValue("@WantDetailID", UpdatedWants[i].WantDetailId);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -211,15 +224,26 @@ namespace BudgieBudgeting.Pages
             String query = "Update SavingsDetails set SavingName = @SavingName,SavingsValue = @SavingsValue where SavingsDetailID = @SavingDetailID"; 
             for (int i = 0; i < UpdatedSavings.Count; i++)
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                if (UpdatedSavings[i].DelSaving)
                 {
 
-                    command.Parameters.AddWithValue("@SavingName", UpdatedSavings[i].SavingName);
-                    command.Parameters.AddWithValue("@SavingValue", UpdatedSavings[i].SavingValue);
-                    command.Parameters.AddWithValue("@SavingDetailID", UpdatedSavings[i].SavingDetailId);
-                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@SavingName", UpdatedSavings[i].SavingName);
+                        command.Parameters.AddWithValue("@SavingValue", UpdatedSavings[i].SavingValue);
+                        command.Parameters.AddWithValue("@SavingDetailID", UpdatedSavings[i].SavingDetailId);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
+        }
+        public static void addnewitem(String name)
+        {
+
         }
     }
     public class Need()
