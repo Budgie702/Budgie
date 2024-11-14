@@ -76,6 +76,7 @@ namespace BudgieBudgeting.Pages
                     need.NeedDetailId = Convert.ToInt32(table.Rows[i][0]);
                     need.NeedName = table.Rows[i][1].ToString();
                     need.NeedValue = (float)Convert.ToDouble(table.Rows[i][2]);
+                    need.DelNeed = false;
                     Needs.Add(need);
                 }
             }
@@ -104,6 +105,7 @@ namespace BudgieBudgeting.Pages
                     want.WantDetailId = Convert.ToInt32(table.Rows[i][0]);
                     want.WantName = table.Rows[i][1].ToString();
                     want.WantValue = (float)Convert.ToDouble(table.Rows[i][2]);
+                    want.DelWant = false;
                     this.Wants.Add(want);
                 }
             }
@@ -127,11 +129,12 @@ namespace BudgieBudgeting.Pages
                 adapter.Fill(table);
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    Saving savings = new Saving();
-                    savings.SavingDetailId = Convert.ToInt32(table.Rows[i][0]);
-                    savings.SavingName = table.Rows[i][1].ToString();
-                    savings.SavingValue = (float)Convert.ToDouble(table.Rows[i][2]);
-                    Savings.Add(savings);
+                    Saving saving = new Saving();
+                    saving.SavingDetailId = Convert.ToInt32(table.Rows[i][0]);
+                    saving.SavingName = table.Rows[i][1].ToString();
+                    saving.SavingValue = (float)Convert.ToDouble(table.Rows[i][2]);
+                    saving.DelSaving = false;  
+                    Savings.Add(saving);
                 }
             }
         }
@@ -227,6 +230,8 @@ namespace BudgieBudgeting.Pages
         public string NeedName { get; set; }
         [Required]
         public float NeedValue {  get; set; }
+        
+        public bool DelNeed { get; set; }
     }
     public class Want()
     {
@@ -236,6 +241,8 @@ namespace BudgieBudgeting.Pages
         public string WantName { get; set; }
         [Required]
         public float WantValue { get; set; }
+        
+        public bool DelWant { get; set; }
     }
     public class Saving()
     {
@@ -245,5 +252,7 @@ namespace BudgieBudgeting.Pages
         public string SavingName { get; set; }
         [Required]
         public float SavingValue { get; set; }
+
+        public bool DelSaving { get; set; }
     }
 }
