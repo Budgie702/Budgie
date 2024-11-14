@@ -16,10 +16,11 @@ steps:
 
 - task: SonarQubePrepare@7
   inputs:
-    SonarQube: 'SonarQube'
+    SonarQube: 'Nathan''sServerSQ'
     scannerMode: 'dotnet'
     projectKey: 'BudgieBudgeting_Budgie.git_82776740-75ce-4da1-98d2-ec0b30559aae'
-    projectName: 'Budgie'
+
+
 
 - task: VSBuild@1
   inputs:
@@ -27,6 +28,7 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
 
 - task: SonarQubeAnalyze@7
   inputs:
