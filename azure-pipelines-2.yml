@@ -18,7 +18,7 @@ steps:
   inputs:
     SonarQube: 'SonarQube'
     scannerMode: 'dotnet'
-    projectKey: 'BudgieBudgeting_Budgie.git_702cd075-d862-409c-9a6f-a866b20c672d'
+    projectKey: 'BudgieBudgeting_Budgie.git_82776740-75ce-4da1-98d2-ec0b30559aae'
     projectName: 'Budgie'
 
 - task: VSBuild@1
