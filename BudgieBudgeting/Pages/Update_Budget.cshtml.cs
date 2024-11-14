@@ -161,7 +161,7 @@ namespace BudgieBudgeting.Pages
                     command.Parameters.AddWithValue("@NeedName", UpdatedNeeds[i].NeedName);
                     command.Parameters.AddWithValue("@NeedValue", UpdatedNeeds[i].NeedValue);
                     command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
-
+                    command.ExecuteNonQuery();
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace BudgieBudgeting.Pages
                     command.Parameters.AddWithValue("@WantName", UpdatedWants[i].WantName);
                     command.Parameters.AddWithValue("@WantValue", UpdatedWants[i].WantValue);
                     command.Parameters.AddWithValue("@WantDetailID", UpdatedWants[i].WantDetailId);
-
+                    command.ExecuteNonQuery();
                 }
             }
         }
@@ -191,7 +191,7 @@ namespace BudgieBudgeting.Pages
                     command.Parameters.AddWithValue("@SavingName", UpdatedSavings[i].SavingName);
                     command.Parameters.AddWithValue("@SavingValue", UpdatedSavings[i].SavingValue);
                     command.Parameters.AddWithValue("@SavingDetailID", UpdatedSavings[i].SavingDetailId);
-
+                    command.ExecuteNonQuery();
                 }
             }
         }
