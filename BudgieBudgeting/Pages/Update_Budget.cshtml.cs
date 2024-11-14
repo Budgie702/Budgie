@@ -30,7 +30,10 @@ namespace BudgieBudgeting.Pages
         {
             // Retrieve the username from the cookie
             Username = HttpContext.Session.GetString("Username"); // Use the same key you used when setting the session
-            string query = "Select dbo.Budget.BudgetId from inner join dbo.Budget on dbo.Customer.CustomerId = dbo.Budget.CustomerId where @Username = dbo.Customer.Username";
+            string query = "Select dbo.Budget.BudgetId " +
+                "from dbo.Customer " +
+                "inner join dbo.Budget on dbo.Customer.CustomerId = dbo.Budget.CustomerId " +
+                "where @Username = dbo.Customer.Username";
             using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
                 DataTable table = new DataTable();
@@ -51,7 +54,14 @@ namespace BudgieBudgeting.Pages
         }
         private void SetNeeds(SqlConnection connection,int BudgetId)
         {
-            String query = "Select dbo.NeedDetails.NeedDetailID,dbo.NeedDetails.NeedName,dbo.NeedDetails.NeedValue from inner join dbo.Need on dbo.NeedDetails.NeedID = dbo.NeedID Where @BudgetId = dbo.Need.BudgetId";
+            String query = "Select " +
+                "dbo.NeedDetails.NeedDetailID," +
+                "dbo.NeedDetails.NeedName," +
+                "dbo.NeedDetails.NeedValue " +
+                "from dbo.Need " +
+                "inner join " +
+                "dbo.NeedDetails on dbo.NeedDetails.NeedID = dbo.Need.NeedID " +
+                "Where @BudgetId = dbo.Need.BudgetId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 DataTable table = new DataTable();
@@ -72,7 +82,14 @@ namespace BudgieBudgeting.Pages
         }
         private void SetWants(SqlConnection connection, int BudgetId)
         {
-            String query = "Select dbo.WantDetails.WantDetailID,dbo.WantDetails.WantName,dbo.WantDetails.WantValue from inner join dbo.Want on dbo.WantDetails.WantID = dbo.WantID Where @BudgetId = dbo.Want.BudgetId";
+            String query = "Select " +
+                "dbo.WantsDetails.WantsDetailID," +
+                "dbo.WantsDetails.WantName," +
+                "dbo.WantsDetails.WantsValue " +
+                "from dbo.Wants " +
+                "inner join " +
+                "dbo.WantsDetails on dbo.WantsDetails.WantsID = dbo.Wants.WantsID " +
+                "Where @BudgetId = dbo.Wants.BudgetId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 DataTable table = new DataTable();
@@ -93,7 +110,13 @@ namespace BudgieBudgeting.Pages
         }
         private void SetSavings(SqlConnection connection, int BudgetId)
         {
-            String query = "Select dbo.SavingDetails.SavingDetailID,dbo.SavingDetails.SavingName,dbo.SavingDetails.SavingValue from inner join dbo.Saving on dbo.SavingDetails.SavingID = dbo.SavingID Where @BudgetId = dbo.Saving.BudgetId";
+            String query = "Select dbo.SavingsDetails.SavingsDetailID," +
+                "dbo.SavingsDetails.SavingName," +
+                "dbo.SavingsDetails.SavingsValue " +
+                "from dbo.Savings " +
+                "inner join " +
+                "dbo.SavingsDetails on dbo.SavingsDetails.SavingsID = dbo.Savings.SavingsID " +
+                "Where @BudgetId = dbo.Savings.BudgetId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 DataTable table = new DataTable();
@@ -167,7 +190,7 @@ namespace BudgieBudgeting.Pages
         }
         public static void UpdateWants(List<Want> UpdatedWants, SqlConnection connection)
         {
-            String query = "Update WantDetails set WantName = @WantName,WantValue = @WantValue where WantDetailID = @WantDetailID";
+            String query = "Update WantsDetails set WantName = @WantName,WantsValue = @WantValue where WantsDetailID = @WantDetailID";
             for (int i = 0; i < UpdatedWants.Count; i++)
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -182,7 +205,7 @@ namespace BudgieBudgeting.Pages
         }
         public static void UpdateSavings(List<Saving> UpdatedSavings, SqlConnection connection)
         {
-            String query = "Update SavingDetails set SavingName = @SavingName,SavingValue = @SavingValue where SavingDetailID = @SavingDetailID"; 
+            String query = "Update SavingsDetails set SavingName = @SavingName,SavingsValue = @SavingsValue where SavingsDetailID = @SavingDetailID"; 
             for (int i = 0; i < UpdatedSavings.Count; i++)
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
