@@ -8,7 +8,6 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-
 namespace BudgieBudgeting.Pages
 {
     public class Update_BudgetModel : PageModel
@@ -178,15 +177,20 @@ namespace BudgieBudgeting.Pages
         }
         public static void UpdateNeeds(List<Need> UpdatedNeeds,SqlConnection connection)
         {
-            String query = "Update NeedDetails set NeedName = @NeedName,NeedValue = @NeedValue where NeedDetailID = @NeedDetailID";
             for (int i = 0; i < UpdatedNeeds.Count; i++)
             {
                 if (UpdatedNeeds[i].DelNeed)
                 {
-
+                    String query = "Delete NeedDetails where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
+                        command.ExecuteNonQuery();
+                    }
                 }
                 else
                 {
+                    String query = "Update NeedDetails set NeedName = @NeedName,NeedValue = @NeedValue where NeedDetailID = @NeedDetailID";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@NeedName", UpdatedNeeds[i].NeedName);
@@ -199,15 +203,20 @@ namespace BudgieBudgeting.Pages
         }
         public static void UpdateWants(List<Want> UpdatedWants, SqlConnection connection)
         {
-            String query = "Update WantsDetails set WantName = @WantName,WantsValue = @WantValue where WantsDetailID = @WantDetailID";
             for (int i = 0; i < UpdatedWants.Count; i++)
             {
                 if (UpdatedWants[i].DelWant)
                 {
-
+                    String query = "Delete NeedDetails where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedWants[i].WantDetailId);
+                        command.ExecuteNonQuery();
+                    }
                 }
                 else
                 {
+                    String query = "Update WantsDetails set WantName = @WantName,WantsValue = @WantValue where WantsDetailID = @WantDetailID";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
 
@@ -221,15 +230,20 @@ namespace BudgieBudgeting.Pages
         }
         public static void UpdateSavings(List<Saving> UpdatedSavings, SqlConnection connection)
         {
-            String query = "Update SavingsDetails set SavingName = @SavingName,SavingsValue = @SavingsValue where SavingsDetailID = @SavingDetailID"; 
             for (int i = 0; i < UpdatedSavings.Count; i++)
             {
                 if (UpdatedSavings[i].DelSaving)
                 {
-
+                    String query = "Delete NeedDetails where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedSavings[i].SavingDetailId);
+                        command.ExecuteNonQuery();
+                    }
                 }
                 else
                 {
+                    String query = "Update SavingsDetails set SavingName = @SavingName,SavingsValue = @SavingsValue where SavingsDetailID = @SavingDetailID";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
 
@@ -241,9 +255,33 @@ namespace BudgieBudgeting.Pages
                 }
             }
         }
-        public static void addnewitem(String name)
+        public void AddNeed()
         {
-
+            Need need = new Need();
+            Needs.Add(need);
+        }
+        public void AddWant()
+        {
+            Want want = new Want();
+            Wants.Add(want);
+        }
+        public void AddSaving()
+        {
+            Saving saving = new Saving();
+            Savings.Add(saving);
+        }
+        public void DeactivateNeed(Need need)
+        {
+            need.DelNeed = true;
+            Console.WriteLine("DeletedNeed");
+        }
+        public void DeactivateWant(Want want)
+        {
+            want.DelWant = true;
+        }
+        public void DeactivateSaving(Saving saving)
+        {
+            saving.DelSaving = true;
         }
     }
     public class Need()
