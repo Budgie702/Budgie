@@ -19,6 +19,7 @@ steps:
     SonarQube: 'Nathan''sServerSQ'
     scannerMode: 'dotnet'
     projectKey: 'BudgieBudgeting_Budgie.git_82776740-75ce-4da1-98d2-ec0b30559aae'
+    extraProperties: sonar.host.url=http://localhost:9000
 
 
 
