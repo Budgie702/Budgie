@@ -8,6 +8,8 @@
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <!-- Removed COMReference as it is not supported in .NET Core/.NET 5+ -->
+  <!--
   <ItemGroup>
     <COMReference Include="{bee4bfec-6683-3e67-9167-3c0cbc68f40a}">
       <WrapperTool>tlbimp</WrapperTool>
@@ -16,6 +18,7 @@
       <Guid>bee4bfec-6683-3e67-9167-3c0cbc68f40a</Guid>
     </COMReference>
   </ItemGroup>
+  -->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />

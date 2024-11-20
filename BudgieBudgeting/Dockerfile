@@ -6,10 +6,10 @@ EXPOSE 80
 # Use the SDK image to build the app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["BudgieBudgeting/BudgieBudgeting.csproj", "BudgieBudgeting/"]
-RUN dotnet restore "BudgieBudgeting/BudgieBudgeting.csproj"
+COPY ["BudgieBudgeting.csproj", "."]
+RUN dotnet restore "BudgieBudgeting.csproj"
 COPY . .
-WORKDIR "/src/BudgieBudgeting"
+WORKDIR "/src"
 RUN dotnet build "BudgieBudgeting.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -31,20 +31,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build_debug
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["BudgieBudgeting/BudgieBudgeting.csproj", "BudgieBudgeting/"]
-RUN dotnet restore "./BudgieBudgeting/BudgieBudgeting.csproj"
+COPY ["BudgieBudgeting.csproj", "."]
+RUN dotnet restore "BudgieBudgeting.csproj"
 COPY . .
-WORKDIR "/src/BudgieBudgeting"
-RUN dotnet build "./BudgieBudgeting.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src"
+RUN dotnet build "BudgieBudgeting.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build_debug AS publish_debug
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./BudgieBudgeting.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "BudgieBudgeting.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base_debug AS final_debug
 WORKDIR /app
 COPY --from=publish_debug /app/publish .
 ENTRYPOINT ["dotnet", "BudgieBudgeting.dll"]
-COPY ["BudgieBudgeting/BudgieBudgeting.csproj", "BudgieBudgeting/"]
