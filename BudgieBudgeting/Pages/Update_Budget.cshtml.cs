@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using Microsoft.Data.SqlClient;
-
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BudgieBudgeting.Pages
 {
@@ -29,7 +29,10 @@ namespace BudgieBudgeting.Pages
         {
             // Retrieve the username from the cookie
             Username = HttpContext.Session.GetString("Username"); // Use the same key you used when setting the session
-            string query = "Select dbo.Budget.BudgetId from inner join dbo.Budget on dbo.Customer.CustomerId = dbo.Budget.CustomerId where @Username = dbo.Customer.Username";
+            string query = "Select dbo.Budget.BudgetId " +
+                "from dbo.Customer " +
+                "inner join dbo.Budget on dbo.Customer.CustomerId = dbo.Budget.CustomerId " +
+                "where @Username = dbo.Customer.Username";
             using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
             {
                 DataTable table = new DataTable();
@@ -50,7 +53,14 @@ namespace BudgieBudgeting.Pages
         }
         private void SetNeeds(SqlConnection connection,int BudgetId)
         {
-            String query = "Select dbo.NeedDetails.NeedDetailID,dbo.NeedDetails.NeedName,dbo.NeedDetails.NeedValue from inner join dbo.Need on dbo.NeedDetails.NeedID = dbo.NeedID Where @BudgetId = dbo.Need.BudgetId";
+            String query = "Select " +
+                "dbo.NeedDetails.NeedDetailID," +
+                "dbo.NeedDetails.NeedName," +
+                "dbo.NeedDetails.NeedValue " +
+                "from dbo.Need " +
+                "inner join " +
+                "dbo.NeedDetails on dbo.NeedDetails.NeedID = dbo.Need.NeedID " +
+                "Where @BudgetId = dbo.Need.BudgetId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 DataTable table = new DataTable();
@@ -65,13 +75,21 @@ namespace BudgieBudgeting.Pages
                     need.NeedDetailId = Convert.ToInt32(table.Rows[i][0]);
                     need.NeedName = table.Rows[i][1].ToString();
                     need.NeedValue = (float)Convert.ToDouble(table.Rows[i][2]);
+                    need.DelNeed = false;
                     Needs.Add(need);
                 }
             }
         }
         private void SetWants(SqlConnection connection, int BudgetId)
         {
-            String query = "Select dbo.WantDetails.WantDetailID,dbo.WantDetails.WantName,dbo.WantDetails.WantValue from inner join dbo.Want on dbo.WantDetails.WantID = dbo.WantID Where @BudgetId = dbo.Want.BudgetId";
+            String query = "Select " +
+                "dbo.WantsDetails.WantsDetailID," +
+                "dbo.WantsDetails.WantName," +
+                "dbo.WantsDetails.WantsValue " +
+                "from dbo.Wants " +
+                "inner join " +
+                "dbo.WantsDetails on dbo.WantsDetails.WantsID = dbo.Wants.WantsID " +
+                "Where @BudgetId = dbo.Wants.BudgetId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 DataTable table = new DataTable();
@@ -86,13 +104,20 @@ namespace BudgieBudgeting.Pages
                     want.WantDetailId = Convert.ToInt32(table.Rows[i][0]);
                     want.WantName = table.Rows[i][1].ToString();
                     want.WantValue = (float)Convert.ToDouble(table.Rows[i][2]);
+                    want.DelWant = false;
                     this.Wants.Add(want);
                 }
             }
         }
         private void SetSavings(SqlConnection connection, int BudgetId)
         {
-            String query = "Select dbo.SavingDetails.SavingDetailID,dbo.SavingDetails.SavingName,dbo.SavingDetails.SavingValue from inner join dbo.Saving on dbo.SavingDetails.SavingID = dbo.SavingID Where @BudgetId = dbo.Saving.BudgetId";
+            String query = "Select dbo.SavingsDetails.SavingsDetailID," +
+                "dbo.SavingsDetails.SavingName," +
+                "dbo.SavingsDetails.SavingsValue " +
+                "from dbo.Savings " +
+                "inner join " +
+                "dbo.SavingsDetails on dbo.SavingsDetails.SavingsID = dbo.Savings.SavingsID " +
+                "Where @BudgetId = dbo.Savings.BudgetId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 DataTable table = new DataTable();
@@ -103,16 +128,17 @@ namespace BudgieBudgeting.Pages
                 adapter.Fill(table);
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    Saving savings = new Saving();
-                    savings.SavingDetailId = Convert.ToInt32(table.Rows[i][0]);
-                    savings.SavingName = table.Rows[i][1].ToString();
-                    savings.SavingValue = (float)Convert.ToDouble(table.Rows[i][2]);
-                    Savings.Add(savings);
+                    Saving saving = new Saving();
+                    saving.SavingDetailId = Convert.ToInt32(table.Rows[i][0]);
+                    saving.SavingName = table.Rows[i][1].ToString();
+                    saving.SavingValue = (float)Convert.ToDouble(table.Rows[i][2]);
+                    saving.DelSaving = false;  
+                    Savings.Add(saving);
                 }
             }
         }
         // This method handles the form submission when the update button is clicked
-        public IActionResult OnPost(string[] Needs, string[] Wants, string[] Savings)
+        public IActionResult OnPost(List<Need> UpdatedNeeds, List<Want> UpdatedWants, List<Saving> UpdatedSavings)
         {
             // TODO: Connect to your database here to update the Needs, Wants, and Savings
             // You can use the Username variable for your queries
@@ -141,8 +167,121 @@ namespace BudgieBudgeting.Pages
                 await context.SaveChangesAsync(); // Save changes to the database
             }
             */
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.Connection.ConnectionString))
+            {
+                UpdateNeeds(UpdatedNeeds,connection);
+                UpdateWants(UpdatedWants,connection);
+                UpdateSavings(UpdatedSavings,connection);
+            }
+                return RedirectToPage(); // Redirect back to the same page
+        }
+        public static void UpdateNeeds(List<Need> UpdatedNeeds,SqlConnection connection)
+        {
+            for (int i = 0; i < UpdatedNeeds.Count; i++)
+            {
+                if (UpdatedNeeds[i].DelNeed)
+                {
+                    String query = "Delete NeedDetails where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    String query = "Update NeedDetails set NeedName = @NeedName,NeedValue = @NeedValue where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedName", UpdatedNeeds[i].NeedName);
+                        command.Parameters.AddWithValue("@NeedValue", UpdatedNeeds[i].NeedValue);
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedNeeds[i].NeedDetailId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+        public static void UpdateWants(List<Want> UpdatedWants, SqlConnection connection)
+        {
+            for (int i = 0; i < UpdatedWants.Count; i++)
+            {
+                if (UpdatedWants[i].DelWant)
+                {
+                    String query = "Delete NeedDetails where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedWants[i].WantDetailId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    String query = "Update WantsDetails set WantName = @WantName,WantsValue = @WantValue where WantsDetailID = @WantDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
 
-            return RedirectToPage(); // Redirect back to the same page
+                        command.Parameters.AddWithValue("@WantName", UpdatedWants[i].WantName);
+                        command.Parameters.AddWithValue("@WantValue", UpdatedWants[i].WantValue);
+                        command.Parameters.AddWithValue("@WantDetailID", UpdatedWants[i].WantDetailId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+        public static void UpdateSavings(List<Saving> UpdatedSavings, SqlConnection connection)
+        {
+            for (int i = 0; i < UpdatedSavings.Count; i++)
+            {
+                if (UpdatedSavings[i].DelSaving)
+                {
+                    String query = "Delete NeedDetails where NeedDetailID = @NeedDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NeedDetailID", UpdatedSavings[i].SavingDetailId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    String query = "Update SavingsDetails set SavingName = @SavingName,SavingsValue = @SavingsValue where SavingsDetailID = @SavingDetailID";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@SavingName", UpdatedSavings[i].SavingName);
+                        command.Parameters.AddWithValue("@SavingValue", UpdatedSavings[i].SavingValue);
+                        command.Parameters.AddWithValue("@SavingDetailID", UpdatedSavings[i].SavingDetailId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+        public void AddNeed()
+        {
+            Need need = new Need();
+            Needs.Add(need);
+        }
+        public void AddWant()
+        {
+            Want want = new Want();
+            Wants.Add(want);
+        }
+        public void AddSaving()
+        {
+            Saving saving = new Saving();
+            Savings.Add(saving);
+        }
+        public void DeactivateNeed(Need need)
+        {
+            need.DelNeed = true;
+            Console.WriteLine("DeletedNeed");
+        }
+        public void DeactivateWant(Want want)
+        {
+            want.DelWant = true;
+        }
+        public void DeactivateSaving(Saving saving)
+        {
+            saving.DelSaving = true;
         }
     }
     public class Need()
@@ -153,6 +292,8 @@ namespace BudgieBudgeting.Pages
         public string NeedName { get; set; }
         [Required]
         public float NeedValue {  get; set; }
+        
+        public bool DelNeed { get; set; }
     }
     public class Want()
     {
@@ -162,6 +303,8 @@ namespace BudgieBudgeting.Pages
         public string WantName { get; set; }
         [Required]
         public float WantValue { get; set; }
+        
+        public bool DelWant { get; set; }
     }
     public class Saving()
     {
@@ -171,5 +314,7 @@ namespace BudgieBudgeting.Pages
         public string SavingName { get; set; }
         [Required]
         public float SavingValue { get; set; }
+
+        public bool DelSaving { get; set; }
     }
 }

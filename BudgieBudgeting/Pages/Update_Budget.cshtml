@@ -59,50 +59,53 @@
                             <div class="budget-columns">
                                 <div class="budget-column" id="needsColumn">
                                     <h4 style="text-align:center;">Needs</h4>
-                                    @foreach (var need in Model.Needs)
+                                    @for (int i = 0; i < Model.Needs.Count; i++)
                                     {
                                         <div class="entry-container">
-                                            <textarea class="form-control" name="Needs[]">@need</textarea>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                            <textarea class="form-control" name="Need" asp-for="Needs[i].NeedName" value="@Model.Needs[i].NeedName"></textarea>
+                                            <input class="form-control" name="Need" asp-for="Needs[i].NeedValue" value="@Model.Needs[i].NeedValue"></input>
+                                            <button type="button" class="btn btn-danger btn-sm" asp-action="@{Model.DeactivateNeed(Model.Needs[i]);}" onclick="removeEntry(this)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     }
                                     <!-- Retrieve data from database here for needs -->
                                     <div class="add-button">
-                                        <button type="button" class="btn btn-primary" onclick="addEntry('needsColumn', 'Needs')">+</button>
+                                        <button type="button" class="btn btn-primary" onclick="addEntry('needsColumn', 'Need')">+</button>
                                     </div>
                                 </div>
                                 <div class="budget-column" id="wantsColumn">
                                     <h4 style="text-align:center;">Wants</h4>
-                                    @foreach (var want in Model.Wants)
+                                    @for (int i = 0; i < Model.Wants.Count; i++)
                                     {
                                         <div class="entry-container">
-                                            <textarea class="form-control" name="Wants[]">@want</textarea>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                            <textarea class="form-control" name="Want" asp-for="Wants[i].WantName" value="@Model.Wants[i].WantName"></textarea>
+                                            <input class="form-control" name="Want" asp-for="Wants[i].WantValue" value="@Model.Wants[i].WantValue"></input>
+                                            <button type="button" class="btn btn-danger btn-sm" asp-action="@{Model.DeactivateWant(Model.Wants[i]);}" onclick="removeEntry(this)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     }
                                     <!-- Retrieve data from database here for wants -->
                                     <div class="add-button">
-                                        <button type="button" class="btn btn-primary" onclick="addEntry('wantsColumn', 'Wants')">+</button>
+                                        <button type="button" class="btn btn-primary" onclick="addEntry('wantsColumn', 'Want')">+</button>
                                     </div>
                                 </div>
                                 <div class="budget-column" id="savingsColumn">
                                     <h4 style="text-align:center;">Savings</h4>
-                                    @foreach (var saving in Model.Savings)
+                                    @for (int i = 0; i < Model.Savings.Count; i++)
                                     {
                                         <div class="entry-container">
-                                            <textarea class="form-control" name="Savings[]">@saving</textarea>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                            <textarea class="form-control" name="Saving" asp-for="Savings[i].SavingName" value="@Model.Savings[i].SavingName"></textarea>
+                                            <input class="form-control" name="Saving" asp-for="Savings[i].SavingValue" value="@Model.Savings[i].SavingValue"></input>
+                                            <button type="button" class="btn btn-danger btn-sm" asp-action="@{Model.DeactivateSaving(Model.Savings[i]);}" onclick="removeEntry(this)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     }
                                     <!-- Retrieve data from database here for savings -->
                                     <div class="add-button">
-                                        <button type="button" class="btn btn-primary" onclick="addEntry('savingsColumn', 'Savings')">+</button>
+                                        <button type="button" class="btn btn-primary" onclick="addEntry('savingsColumn', 'Saving')">+</button>
                                     </div>
                                 </div>
                             </div>
@@ -118,19 +121,37 @@
 
     <script>
         function addEntry(containerId, name) {
+
+            if(name == "Need"){
+                @{
+                    Model.AddNeed();
+                }
+            }
+            else if(name == "Want"){
+                @{
+                    Model.AddWant();
+                }
+            }
+            else if(name == "Saving"){
+                @{
+                    Model.AddSaving();
+                }
+            }
             var container = document.getElementById(containerId);
             var newEntry = document.createElement('div');
             newEntry.className = 'entry-container';
             newEntry.innerHTML = `
-                                <textarea class="form-control" name="${name}[]" placeholder="Enter ${name.toLowerCase()}"></textarea>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="removeEntry(this)">
+                                    <textarea class="form-control" name="${name}" asp-for="${name}s[${name}s.Count-1].${name}Name" value=""></textarea>
+                                    <input class="form-control" name="${name}" asp-for="${name}s[${name}s.Count-1].${name}Value" value=""></input>
+                                    <button type="button" class="btn btn-danger btn-sm" asp-action="@@{Deactivate${name}(Model.${name}s[i]);}" onclick="removeEntry(this)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             `;
             container.querySelector('.add-button').before(newEntry);
         }
 
-        function removeEntry(button) {
+        function removeEntry(button,name,) {
+            
             // Remove the entry (textarea and button) that corresponds to the trash icon clicked
             var entryContainer = button.parentElement;
             entryContainer.remove();

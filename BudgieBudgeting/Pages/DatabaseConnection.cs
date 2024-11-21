@@ -9,7 +9,6 @@ namespace BudgieBudgeting
         public DatabaseConnection(string connectionString)
         {
             _connectionString = connectionString;
-            Console.WriteLine(_connectionString);
             Connection = new Microsoft.Data.SqlClient.SqlConnection(_connectionString);
         }
 

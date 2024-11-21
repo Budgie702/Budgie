@@ -5,8 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>699b05e8-c74f-4738-843e-88bdd995cc82</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <!-- Removed COMReference as it is not supported in .NET Core/.NET 5+ -->
+  <!--
   <ItemGroup>
     <COMReference Include="{bee4bfec-6683-3e67-9167-3c0cbc68f40a}">
       <WrapperTool>tlbimp</WrapperTool>
@@ -15,6 +18,7 @@
       <Guid>bee4bfec-6683-3e67-9167-3c0cbc68f40a</Guid>
     </COMReference>
   </ItemGroup>
+  -->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
@@ -22,6 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
   </ItemGroup>
 
