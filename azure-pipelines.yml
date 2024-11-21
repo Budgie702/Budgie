@@ -1,11 +1,3 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
-trigger:
-- master
-
 pool: Default
 
 variables:
@@ -20,6 +12,15 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: SonarQubePrepare@7
+  inputs:
+    SonarQube: 'Nathan''sServerSQ'
+    scannerMode: 'dotnet'
+    projectKey: 'BudgieBudgeting_Budgie.git_82776740-75ce-4da1-98d2-ec0b30559aae'
+    extraProperties: sonar.host.url=http://localhost:9000
+
+
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -27,7 +28,16 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+
+- task: SonarQubeAnalyze@7
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
+
+- task: SonarQubePublish@7
+  inputs:
+    pollingTimeoutSec: '300'
